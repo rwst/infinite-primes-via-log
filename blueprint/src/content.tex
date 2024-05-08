@@ -32,5 +32,18 @@ $$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}$$
 
 \begin{lemma}
 \label{lem:lemma3}
-$$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} 
+$$\underset{p\le x}\prod_{p\in\\mathbb{P}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Bigr) = \prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1}$$
 \end{lemma}
+
+\begin{lemma}
+\label{lem:lemma2}
+Given the infinite set $S_x$ of all numbers $m$, that have only prime factors $p\le x$,
+$$\sum{m\in S_x}\frac{1}{m} = \underset{p\le x}\prod_{p\in\\mathbb{P}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Bigr)$$
+\end{lemma}
+
+begin{lemma}
+\label{lem:lemma1}
+Given the infinite set $S_x$ of all numbers $m$, that have only prime factors $p\le x$,
+$$\sum_1^n\frac1n \le \sum{m\in S_x}\frac{1}{m} $$
+\end{lemma}
+
