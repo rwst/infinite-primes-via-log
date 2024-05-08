@@ -3,4 +3,21 @@ The proof of the infinitude of primes via the fact that $\log x\le \pi(x)+1$ is 
 The aim of this formalization is to stay close to the text. It turned out that the proof needs "obvious" facts about the primes, and to show these, we cannot use Mathlib4's set of primes, which has infinite cardinality. So, we construct \texttt{FinitePrimes} and prove some of their properties that we need.
 
 \begin{theorem}
+\label{thm:infinite_primes}
+\lean{infinite_primes}
+The set $\mathbb{P} = \bigl{p \in \mathbb{N} \ \big\| \ p \mathrm{prime} \bigr}$ has infinite cardinality. 
+\end{theorem}
+
+\begin{theorem}
+\label{thm:primeCountingReal_unbounded}
+\lean{primeCountingReal_unbounded}
+The prime counting function in the real domain, $\pi:\ \mathbb{R} \mapsto \mathbb{N} \ := \#\bigl{p\mid\| p \in\mathbb{P}, p\le x \bigr}$ is unbounded.
+\end{theorem}
+
+\begin{theorem}
+\label{thm:log_le_primeCountingReal_add_one}
+\lean{log_le_primeCountingReal_add_one}
+For $x\in\mathbb{R}$, $\log x \le \pi(x) +1$.
+\end{theorem}
+
 \end{theorem}
