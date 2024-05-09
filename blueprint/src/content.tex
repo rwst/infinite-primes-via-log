@@ -4,7 +4,7 @@ The aim of this formalization is to stay close to the text. It turned out that t
 
 \begin{theorem}
 \label{thm:infinite_primes}
-\lean{infinite_primes}
+\lean{infinity_of_primes}
 \uses{thm:primeCountingReal_unbounded}
 The set $\mathbb{P} = \bigl{p \in \mathbb{N} \ \big\| \ p \mathrm{prime} \bigr}$ has infinite cardinality. 
 \end{theorem}
@@ -32,6 +32,7 @@ $$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi+1$$
 
 \begin{lemma}
 \label{lem:lemma4}
+\uses{lem:lemma4-1}
 $$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}$$
 \end{lemma}
 
@@ -68,6 +69,7 @@ $$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
 \begin{lemma}
 \label{lem:lemma5-2}
 \lean{primeCountingReal_ge_two}
+\uses{lem:lemma5-2-1}
 For $x\ge3$, $\pi(x)\ge2$.
 \end{lemma}
 
@@ -78,3 +80,16 @@ Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi_R(x
 
 In the text we use $\pi$ in both cases, since it is clear from the domain which function is meant.
 \end{definition}
+
+\begin{lemma}
+\label{lem:lemma5-2-1}
+\lean{monotone_primeCountingReal}
+$\pi$ is monotone.
+\end{lemma}
+
+\begin{lemma}
+\label{lem:lemma4-1}
+\lean{H_P4_4}
+For $k,p \in\mathbb{R}$, $k\ge0$, $p \ge k+1$,
+$$\frac{p}{p-1} \le \frac{k+1}{k}.
+\end{lemma}
