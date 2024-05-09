@@ -5,18 +5,21 @@ The aim of this formalization is to stay close to the text. It turned out that t
 \begin{theorem}
 \label{thm:infinite_primes}
 \lean{infinite_primes}
+\uses{thm:primeCountingReal_unbounded}
 The set $\mathbb{P} = \bigl{p \in \mathbb{N} \ \big\| \ p \mathrm{prime} \bigr}$ has infinite cardinality. 
 \end{theorem}
 
 \begin{theorem}
 \label{thm:primeCountingReal_unbounded}
 \lean{primeCountingReal_unbounded}
+\uses{thm:log_le_primeCountingReal_add_one}
 The prime counting function in the real domain, $\pi:\ \mathbb{R} \mapsto \mathbb{N} \ := \#\bigl{p\mid\| p \in\mathbb{P}, p\le x \bigr}$ is unbounded.
 \end{theorem}
 
 \begin{theorem}
 \label{thm:log_le_primeCountingReal_add_one}
 \lean{log_le_primeCountingReal_add_one}
+\uses{lem:lemma0, lem:lemma1, lem:lemma2, lem:lemma3, lem:lemma4, lem:lemma5}
 For $x\in\mathbb{R}$, $\log x \le \pi(x) +1$.
 \end{theorem}
 
@@ -47,3 +50,8 @@ Given the infinite set $S_x$ of all numbers $m$, that have only prime factors $p
 $$\sum_1^n\frac1n \le \sum{m\in S_x}\frac{1}{m} $$
 \end{lemma}
 
+\begin{lemma}
+\label{lem:lemma0}
+For $n\in\mathbb{N}$, $x\in\mathbb{R}$, $n\le x < n+1$,
+$$\log x \le \sum_{i=1}^n\frac1i$$
+\end{lemma}
