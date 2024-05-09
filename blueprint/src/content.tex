@@ -61,7 +61,7 @@ $$\log x \le \sum_{i=1}^n\frac1i$$
 \begin{lemma}
 \label{lem:lemma5-1}
 \lean{prod_Icc_succ_div}
-For $n\ge2$,
+For $n\ge2$,(
 $$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
 \end{lemma}
 
@@ -70,3 +70,11 @@ $$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
 \lean{primeCountingReal_ge_two}
 For $x\ge3$, $\pi(x)\ge2$.
 \end{lemma}
+
+\begin{definition}
+\label{def:piReal}
+\lean{primeCountingReal}
+Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi_R(x)$, $x\in\mathbb{R}$ as $\pi_R(x) = \pi(|\lfloor x\rfloor|)$.
+
+In the text we use $\pi$ in both cases, since it is clear from the domain which function is meant.
+\end{definition}
