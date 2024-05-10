@@ -2,7 +2,8 @@ import Mathlib
 
 set_option autoImplicit false
 
-def hello := "world"
+open Finset Nat
+open BigOperators
 
 def S₁ (x : ℝ) : Set ℕ :=
  { n | ∀ p, Nat.Prime p → p ∣ n → p ≤ x }
