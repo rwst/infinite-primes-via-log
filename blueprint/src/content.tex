@@ -5,9 +5,7 @@ The aim of this formalization is to stay close to the text. It turned out that t
 \begin{definition-pre}
 \label{def:piReal}
 \lean{primeCountingReal}
-Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi_R(x)$, $x\in\mathbb{R}$ as $\pi_R(x) = \pi(|\lfloor x\rfloor|)$.
-
-In the text we use $\pi$ in both cases, since it is clear from the domain which function is meant.
+Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi(x)$, $x\in\mathbb{R}$ as $\pi(x) = \pi(|\lfloor x\rfloor|)$.
 \end{definition-pre}
 
 \begin{lemma}
@@ -21,6 +19,7 @@ $\pi$ is monotone.
 \label{lem:lemma5-2}
 \lean{primeCountingReal_ge_two}
 \uses{lem:lemma5-2-1}
+\leanok
 For $x\ge3$, $\pi(x)\ge2$.
 \end{lemma}
 
@@ -36,6 +35,7 @@ For $n\ge2$,
 \label{lem:lemma5}
 \lean{H_P4_5}
 \uses{lem:lemma5-1, lem:lemma5-2}
+\leanok
 For $x\ge3$,
     $$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi+1.$$
 \end{lemma}
@@ -52,6 +52,7 @@ $$\frac{p}{p-1} \le \frac{k+1}{k}.$$
 \label{lem:lemma4}
 \lean{H_P4_4}
 \uses{lem:lemma4-1}
+\leanok
 $$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
 \end{lemma}
 
