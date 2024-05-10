@@ -5,15 +5,19 @@ The aim of this formalization is to stay close to the text. It turned out that t
 \begin{definition-pre}
 \label{def:piReal}
 \lean{primeCountingReal}
-Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi(x)$, $x\in\mathbb{R}$ as $\pi(x) = \pi(|\lfloor x\rfloor|)$.
+Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi(x)$, $x\in\mathbb{R}$ as $\pi(x) = \pi(|\lfloor x\rfloor|)$ for $x\ge2$, and $0$ otherwise.
 \end{definition-pre}
 
 \begin{lemma}
 \label{lem:lemma5-2-1}
 \lean{monotone_primeCountingReal}
 \leanok
-$\pi$ is monotone.
+$\pi(x)$ is monotone.
 \end{lemma}
+\begin{proof}
+\leanok
+By cases and the monotonicity of $\pi(n)$ and that of the floor function.
+\end{proof}
 
 \begin{lemma}
 \label{lem:lemma5-2}
@@ -30,6 +34,10 @@ For $x\ge3$, $\pi(x)\ge2$.
 For $n\ge2$,
     $$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
 \end{lemma}
+\begin{proof}
+\leanok
+We transform into a product over the open interval and use the existing Mathlib4's lemmata in an induction proof.
+\end{proof}
 
 \begin{lemma}
 \label{lem:lemma5}
@@ -47,6 +55,10 @@ For $x\ge3$,
 For $k,p \in\mathbb{R}$, $k\ge0$, $p \ge k+1$,
 $$\frac{p}{p-1} \le \frac{k+1}{k}.$$
 \end{lemma}
+\begin{proof}
+\leanok
+The current proof is by algebraic manipulation of fractions.
+\end{proof}
 
 \begin{lemma}
 \label{lem:lemma4}
