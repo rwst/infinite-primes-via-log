@@ -2,6 +2,9 @@ import Mathlib
 
 set_option autoImplicit false
 
+noncomputable def primeCountingReal (x : ℝ) : ℕ :=
+  if (x ≤ 0) then 0 else primeCounting ⌊x⌋₊
+
 open Finset Nat
 open BigOperators
 
