@@ -24,7 +24,7 @@ theorem monotone_primeCountingReal : Monotone primeCountingReal := by
   · by_cases hb : b ≤ 0
     · linarith
     · simp [ha, hb]
-    --  exact monotone_primeCounting <| Nat.floor_mono hab
+      exact monotone_primeCounting <| Nat.floor_mono hab
 
 theorem primeCountingReal_three : primeCountingReal 3 = 2 := by
   unfold primeCountingReal
@@ -59,7 +59,7 @@ lemma prod_Icc_succ_div (n : ℕ) (hn : 2 ≤ n) : (∏ x in Icc 1 n, ((x + 1) :
 
 lemma H_P4_4 : (∏ k in Icc 1 (primeCountingReal x), (nth Nat.Prime k : ℝ) / ((nth Nat.Prime k) - 1))
     ≤ (∏ k in Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
-  rw [H_P4_4a]
+  --rw [H_P4_4a]
   sorry
 
 lemma H_P4_5 (hx : x ≥ 3) : (∏ k in Icc 1 (primeCountingReal x), ((k + 1) : ℝ)/ k) = primeCountingReal x + 1 := by
