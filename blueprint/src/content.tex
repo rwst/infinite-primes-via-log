@@ -1,4 +1,4 @@
-The proof of the infinitude of primes via the fact that $\log x\le \pi(x)+1$ is the fourth proof of this theorem in Aigner & Ziegler's "Proofs from THE BOOK", and attributed to Euler. I'm a hobby mathematician learning to formalize proofs in the Lean4 language. I chose this proof as a beginner project, not knowing exactly what I went into. However,  the best way to know in many occasions is to make a map. This is the reason for this blueprint. 
+The proof of the infinitude of primes via the fact that $\log x\le \pi(x)+1$ is the fourth proof of this theorem in Aigner \& Ziegler's "Proofs from THE BOOK", and attributed to Euler. I'm a hobby mathematician learning to formalize proofs in the Lean4 language. I chose this proof as a beginner project, not knowing exactly what I went into. However,  the best way to know in many occasions is to make a map. This is the reason for this blueprint. 
 
 The aim of this formalization is to stay close to the text. It turned out that the proof needs "obvious" facts about the primes, and to show these, we cannot use Mathlib4's set of primes, which has infinite cardinality. So, we construct \texttt{FinitePrimes} and prove some of their properties that we need.
 
@@ -13,6 +13,7 @@ In the text we use $\pi$ in both cases, since it is clear from the domain which 
 \begin{lemma}
 \label{lem:lemma5-2-1}
 \lean{monotone_primeCountingReal}
+\leanok
 $\pi$ is monotone.
 \end{lemma}
 
@@ -26,26 +27,30 @@ For $x\ge3$, $\pi(x)\ge2$.
 \begin{lemma}
 \label{lem:lemma5-1}
 \lean{prod_Icc_succ_div}
+\leanok
 For $n\ge2$,
-$$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
+    $$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
 \end{lemma}
 
 \begin{lemma}
 \label{lem:lemma5}
 \lean{H_P4_5}
 \uses{lem:lemma5-1, lem:lemma5-2}
-$$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi+1.$$
+For $x\ge3$,
+    $$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi+1.$$
 \end{lemma}
 
 \begin{lemma}
 \label{lem:lemma4-1}
-\lean{H_P4_4}
+\lean{H_P4_4a}
+\leanok
 For $k,p \in\mathbb{R}$, $k\ge0$, $p \ge k+1$,
 $$\frac{p}{p-1} \le \frac{k+1}{k}.$$
 \end{lemma}
 
 \begin{lemma}
 \label{lem:lemma4}
+\lean{H_P4_4}
 \uses{lem:lemma4-1}
 $$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
 \end{lemma}
