@@ -1,4 +1,5 @@
 import Mathlib
+import Mathlib.NumberTheory.PrimeCounting
 
 set_option autoImplicit false
 
@@ -7,6 +8,7 @@ noncomputable def primeCountingReal (x : ℝ) : ℕ :=
 
 open Finset Nat
 open BigOperators
+variable (x : Real)
 
 def S₁ (x : ℝ) : Set ℕ :=
  { n | ∀ p, Nat.Prime p → p ∣ n → p ≤ x }
