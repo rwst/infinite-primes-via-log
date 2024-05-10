@@ -2,68 +2,18 @@ The proof of the infinitude of primes via the fact that $\log x\le \pi(x)+1$ is 
 
 The aim of this formalization is to stay close to the text. It turned out that the proof needs "obvious" facts about the primes, and to show these, we cannot use Mathlib4's set of primes, which has infinite cardinality. So, we construct \texttt{FinitePrimes} and prove some of their properties that we need.
 
-\begin{theorem}
-\label{thm:infinite_primes}
-\lean{infinity_of_primes}
-\uses{thm:primeCountingReal_unbounded}
-The set $\mathbb{P} = \bigl{p \in \mathbb{N} \ \big\| \ p \mathrm{prime} \bigr}$ has infinite cardinality. 
-\end{theorem}
+\begin{definition-pre}
+\label{def:piReal}
+\lean{primeCountingReal}
+Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi_R(x)$, $x\in\mathbb{R}$ as $\pi_R(x) = \pi(|\lfloor x\rfloor|)$.
 
-\begin{theorem}
-\label{thm:primeCountingReal_unbounded}
-\lean{primeCountingReal_unbounded}
-\uses{thm:log_le_primeCountingReal_add_one}
-The prime counting function in the real domain, $\pi:\ \mathbb{R} \mapsto \mathbb{N} \ := \#\bigl{p\mid\| p \in\mathbb{P}, p\le x \bigr}$ is unbounded.
-\end{theorem}
-
-\begin{theorem}
-\label{thm:log_le_primeCountingReal_add_one}
-\lean{log_le_primeCountingReal_add_one}
-\uses{lem:lemma0, lem:lemma1, lem:lemma2, lem:lemma3, lem:lemma4, lem:lemma5}
-For $x\in\mathbb{R}$, $\log x \le \pi(x) +1$.
-\end{theorem}
+In the text we use $\pi$ in both cases, since it is clear from the domain which function is meant.
+\end{definition-pre}
 
 \begin{lemma}
-\label{lem:lemma5}
-\lean{H_P4_5}
-\uses{lem:lemma5-1, lem:lemma5-2}
-$$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi+1$$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma4}
-\uses{lem:lemma4-1}
-$$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}$$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma3}
-$$\underset{p\le x}\prod_{p\in\\mathbb{P}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Bigr) = \prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1}$$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma2}
-Given the infinite set $S_x$ of all numbers $m$, that have only prime factors $p\le x$,
-$$\sum{m\in S_x}\frac{1}{m} = \underset{p\le x}\prod_{p\in\\mathbb{P}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Bigr)$$
-\end{lemma}
-
-begin{lemma}
-\label{lem:lemma1}
-Given the infinite set $S_x$ of all numbers $m$, that have only prime factors $p\le x$,
-$$\sum_1^n\frac1n \le \sum{m\in S_x}\frac{1}{m} $$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma0}
-For $n\in\mathbb{N}$, $x\in\mathbb{R}$, $n\le x < n+1$,
-$$\log x \le \sum_{i=1}^n\frac1i$$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma5-1}
-\lean{prod_Icc_succ_div}
-For $n\ge2$,(
-$$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
+\label{lem:lemma5-2-1}
+\lean{monotone_primeCountingReal}
+$\pi$ is monotone.
 \end{lemma}
 
 \begin{lemma}
@@ -73,23 +23,74 @@ $$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
 For $x\ge3$, $\pi(x)\ge2$.
 \end{lemma}
 
-\begin{definition}
-\label{def:piReal}
-\lean{primeCountingReal}
-Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi_R(x)$, $x\in\mathbb{R}$ as $\pi_R(x) = \pi(|\lfloor x\rfloor|)$.
-
-In the text we use $\pi$ in both cases, since it is clear from the domain which function is meant.
-\end{definition}
+\begin{lemma}
+\label{lem:lemma5-1}
+\lean{prod_Icc_succ_div}
+For $n\ge2$,
+$$\prod_{k=1}^{n}\frac{k+1}{k} = n+1.$$
+\end{lemma}
 
 \begin{lemma}
-\label{lem:lemma5-2-1}
-\lean{monotone_primeCountingReal}
-$\pi$ is monotone.
+\label{lem:lemma5}
+\lean{H_P4_5}
+\uses{lem:lemma5-1, lem:lemma5-2}
+$$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi+1.$$
 \end{lemma}
 
 \begin{lemma}
 \label{lem:lemma4-1}
 \lean{H_P4_4}
 For $k,p \in\mathbb{R}$, $k\ge0$, $p \ge k+1$,
-$$\frac{p}{p-1} \le \frac{k+1}{k}.
+$$\frac{p}{p-1} \le \frac{k+1}{k}.$$
 \end{lemma}
+
+\begin{lemma}
+\label{lem:lemma4}
+\uses{lem:lemma4-1}
+$$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
+\end{lemma}
+
+\begin{lemma}
+\label{lem:lemma3}
+    $$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big) = \prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1}$$
+\end{lemma}
+
+\begin{lemma}
+\label{lem:lemma2}
+Given the infinite set $S_x$ of all numbers $m$ that have only prime factors $p\le x$,
+    $$\sum_{m\in S_x}\frac{1}{m} = \underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big).$$
+\end{lemma}
+
+\begin{lemma}
+\label{lem:lemma1}
+Given the infinite set $S_x$ of all numbers $m$ that have only prime factors $p\le x$,
+$$\sum_1^n\frac1n \le \sum_{m\in S_x}\frac{1}{m}. $$
+\end{lemma}
+
+\begin{lemma}
+\label{lem:lemma0}
+For $n\in\mathbb{N}$, $x\in\mathbb{R}$, $n\le x < n+1$,
+$$\log x \le \sum_{i=1}^n\frac1i.$$
+\end{lemma}
+
+\begin{theorem}
+\label{thm:log_le_primeCountingReal_add_one}
+\lean{log_le_primeCountingReal_add_one}
+\uses{lem:lemma0, lem:lemma1, lem:lemma2, lem:lemma3, lem:lemma4, lem:lemma5}
+For $x\in\mathbb{R}$, $\log x \le \pi(x) +1$.
+\end{theorem}
+
+\begin{theorem}
+\label{thm:primeCountingReal_unbounded}
+\lean{primeCountingReal_unbounded}
+\uses{thm:log_le_primeCountingReal_add_one}
+The prime counting function in the real domain, $\pi:\ \mathbb{R} \mapsto \mathbb{N} \ := \#\big\{p\mid p \in\mathbb{P}, p\le x \big\}$ is unbounded above.
+\end{theorem}
+
+\begin{theorem}
+\label{thm:infinite_primes}
+\lean{infinity_of_primes}
+\uses{thm:primeCountingReal_unbounded}
+The set $\mathbb{P} = \big\{p \in \mathbb{N} \ \mid \ p \ \mathrm{prime} \big\}$ has infinite cardinality. 
+\end{theorem}
+
