@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['$','$'], ['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Infinite primes via log(x)</title>
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+<link rel="stylesheet" href="styles/showmore.css" />
+<link rel="stylesheet" href="styles/blueprint.css" />
+<link rel="stylesheet" href="styles/extra_styles.css" />
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<div class="titlepage">
+<h1>Infinite primes via log(x)</h1>
+<p class="authors">
+<span class="author">Ralf Stephan</span>
+</p>
+</div>
+<p>The proof of the infinitude of primes via the fact that \(\log x\le \pi (x)+1\) is the fourth proof of this theorem in Aigner  Ziegler’s "Proofs from THE BOOK", and attributed to Euler. I’m a hobby mathematician learning to formalize proofs in the Lean4 language. I chose this proof as a beginner project, not knowing exactly what I went into. However, the best way to know in many occasions is to make a map. This is the reason for this blueprint. </p>
+<p>The aim of this formalization is to stay close to the text. It turned out that the proof needs "obvious" facts about the primes, and to show these, we cannot use Mathlib4’s set of primes, which has infinite cardinality. So, we construct <span class="ttfamily">FinitePrimes</span> and prove some of their properties that we need. </p>
+<div class="definition-pre_thmwrapper theorem-style-plain" id="def:piReal">
+  <div class="definition-pre_thmheading">
+    <span class="definition-pre_thmcaption">
+    Definition
+    </span>
+    <span class="definition-pre_thmlabel">0.15</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#def:piReal">#</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition-pre_thmcontent">
+  <p>  Given the prime counting function \(\pi (n)\), \(n\in \mathbb {N}\), we define \(\pi _R(x)\), \(x\in \mathbb {R}\) as \(\pi _R(x) = \pi (|\lfloor x\rfloor |)\). </p>
+<p>In the text we use \(\pi \) in both cases, since it is clear from the domain which function is meant. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma5-2-1">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.16</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma5-2-1">#</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/monotone_primeCountingReal" class="lean_decl">monotone_primeCountingReal</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  \(\pi \) is monotone. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma5-2">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.17</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma5-2">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#lem:lemma5-2-1">Lemma 0.16</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/primeCountingReal_ge_two" class="lean_decl">primeCountingReal_ge_two</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>   For \(x\ge 3\), \(\pi (x)\ge 2\). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma5-1">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.18</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma5-1">#</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/prod_Icc_succ_div" class="lean_decl">prod_Icc_succ_div</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  For \(n\ge 2\), </p>
+<div class="displaymath" id="a0000000011">
+  \[ \prod _{k=1}^{n}\frac{k+1}{k} = n+1. \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma5">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.19</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma5">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#lem:lemma5-1">Lemma 0.18</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma5-2">Lemma 0.17</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_5" class="lean_decl">H_P4_5</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  
+<div class="displaymath" id="a0000000012">
+  \[ \prod _{k=1}^{\pi (x)}\frac{k+1}{k} = \pi +1. \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma4-1">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.20</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma4-1">#</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_4" class="lean_decl">H_P4_4</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  For \(k,p \in \mathbb {R}\), \(k\ge 0\), \(p \ge k+1\), </p>
+<div class="displaymath" id="a0000000013">
+  \[ \frac{p}{p-1} \le \frac{k+1}{k}. \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma4">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.21</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma4">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#lem:lemma4-1">Lemma 0.20</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  
+<div class="displaymath" id="a0000000014">
+  \[ \prod _{k=1}^{\pi (x)}\frac{p_k}{p_k-1} \le \prod _{k=1}^{\pi (x)}\frac{k+1}{k}. \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma3">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.22</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma3">#</a>
+    
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  
+<div class="displaymath" id="a0000000015">
+  \[ \underset {p\le x}{\prod _{p\in \mathbb {P}}}\Big(\sum _{k\in \mathbb {N}}\frac{1}{p^k}\Big) = \prod _{k=1}^{\pi (x)}\frac{p_k}{p_k-1} \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma2">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.23</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma2">#</a>
+    
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> Given the infinite set \(S_x\) of all numbers \(m\) that have only prime factors \(p\le x\), </p>
+<div class="displaymath" id="a0000000016">
+  \[ \sum _{m\in S_x}\frac{1}{m} = \underset {p\le x}{\prod _{p\in \mathbb {P}}}\Big(\sum _{k\in \mathbb {N}}\frac{1}{p^k}\Big). \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma1">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.24</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma1">#</a>
+    
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> Given the infinite set \(S_x\) of all numbers \(m\) that have only prime factors \(p\le x\), </p>
+<div class="displaymath" id="a0000000017">
+  \[ \sum _1^n\frac1n \le \sum _{m\in S_x}\frac{1}{m}.  \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma0">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.25</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#lem:lemma0">#</a>
+    
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> For \(n\in \mathbb {N}\), \(x\in \mathbb {R}\), \(n\le x {\lt} n+1\), </p>
+<div class="displaymath" id="a0000000018">
+  \[ \log x \le \sum _{i=1}^n\frac1i. \]
+</div>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:log_le_primeCountingReal_add_one">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.26</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#thm:log_le_primeCountingReal_add_one">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#lem:lemma0">Lemma 0.25</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma1">Lemma 0.24</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma2">Lemma 0.23</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma3">Lemma 0.22</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma4">Lemma 0.21</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma5">Lemma 0.19</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/log_le_primeCountingReal_add_one" class="lean_decl">log_le_primeCountingReal_add_one</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>   For \(x\in \mathbb {R}\), \(\log x \le \pi (x) +1\). </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:primeCountingReal_unbounded">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.27</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#thm:primeCountingReal_unbounded">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#thm:log_le_primeCountingReal_add_one">Theorem 0.26</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/primeCountingReal_unbounded" class="lean_decl">primeCountingReal_unbounded</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>   The prime counting function in the real domain, \(\pi :\  \mathbb {R} \mapsto \mathbb {N} \  := \# \big\{ p\mid p \in \mathbb {P}, p\le x \big\} \) is unbounded above. </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="thm:infinite_primes">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.28</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="sect0001.html#thm:infinite_primes">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#thm:primeCountingReal_unbounded">Theorem 0.27</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/infinity_of_primes" class="lean_decl">infinity_of_primes</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p>   The set \(\mathbb {P} = \big\{ p \in \mathbb {N} \  \mid \  p \  \mathrm{prime} \big\} \) has infinite cardinality. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <svg  id="showmore-minus" class="icon icon-eye-minus showmore"><use xlink:href="symbol-defs.svg#icon-eye-minus"></use></svg>
+
+  <svg  id="showmore-plus" class="icon icon-eye-plus showmore"><use xlink:href="symbol-defs.svg#icon-eye-plus"></use></svg>
+
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+<script type="text/javascript" src="js/js.cookie.min.js"></script>
+<script type="text/javascript" src="js/showmore.js"></script>
+</body>
+</html>
