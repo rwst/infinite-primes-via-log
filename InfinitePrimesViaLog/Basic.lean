@@ -6,9 +6,8 @@ set_option autoImplicit false
 noncomputable def primeCountingReal (x : ℝ) : ℕ :=
   if (x ≤ 0) then 0 else Nat.primeCounting ⌊x⌋₊
 
-open Finset Nat
-open BigOperators
-variable (x : Real)
+open Finset Nat BigOperators Filter
+variable (x : ℝ)
 
 def S₁ (x : ℝ) : Set ℕ :=
  { n | ∀ p, Nat.Prime p → p ∣ n → p ≤ x }
@@ -31,6 +30,8 @@ theorem primeCountingReal_three : primeCountingReal 3 = 2 := by
   norm_num
   have : π 3 = 2 := by decide
   sorry
+
+theorem primeCountingReal_ge_two (hx : x ≥ 3) : primeCountingReal x ≥ 2 := by sorry
 
 lemma H_P4_4a {k p: ℝ} (hk: k > 0) (hp: p ≥ k + 1): p / (p - 1) ≤ (k + 1) / k := by
   have h_k_nonzero: k ≠ 0 := ne_iff_lt_or_gt.mpr (Or.inr hk)
@@ -68,3 +69,16 @@ lemma H_P4_5 (hx : x ≥ 3) : (∏ k in Icc 1 (primeCountingReal x), ((k + 1) : 
   refine Monotone.imp monotone_primeCountingReal ?h
   exact hx
 
+theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ) (hxge : x ≥ n) (hxlt : x < n + 1) :
+      Real.log x ≤ primeCountingReal x + 1 :=
+  calc
+    Real.log x ≤ ∑ k in Icc 1 n, (k : ℝ)⁻¹ := by sorry
+    _ ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := by sorry
+    _ ≤ (∏ p in primesBelow ⌊x⌋.natAbs, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
+    _ ≤ (∏ k in Icc 1 (primeCountingReal x), (nth Nat.Prime k : ℝ) / ((nth Nat.Prime k) - 1)) := by sorry
+    _ ≤ (∏ k in Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by sorry
+    _ ≤ primeCountingReal x + 1 := by sorry
+
+theorem primeCountingReal_unbounded : Tendsto primeCountingReal atTop atTop := by sorry
+
+--theorem infinity_of_primes₄ :

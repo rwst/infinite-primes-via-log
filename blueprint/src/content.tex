@@ -94,6 +94,7 @@ $$\log x \le \sum_{i=1}^n\frac1i.$$
 \label{thm:log_le_primeCountingReal_add_one}
 \lean{log_le_primeCountingReal_add_one}
 \uses{lem:lemma0, lem:lemma1, lem:lemma2, lem:lemma3, lem:lemma4, lem:lemma5}
+\leanok
 For $x\in\mathbb{R}$, $\log x \le \pi(x) +1$.
 \end{theorem}
 
@@ -101,12 +102,13 @@ For $x\in\mathbb{R}$, $\log x \le \pi(x) +1$.
 \label{thm:primeCountingReal_unbounded}
 \lean{primeCountingReal_unbounded}
 \uses{thm:log_le_primeCountingReal_add_one}
+\leanok
 The prime counting function in the real domain, $\pi:\ \mathbb{R} \mapsto \mathbb{N} \ := \#\big\{p\mid p \in\mathbb{P}, p\le x \big\}$ is unbounded above.
 \end{theorem}
 
 \begin{theorem}
 \label{thm:infinite_primes}
-\lean{infinity_of_primes}
+%\lean{infinity_of_primes₄}
 \uses{thm:primeCountingReal_unbounded}
 The set $\mathbb{P} = \big\{p \in \mathbb{N} \ \mid \ p \ \mathrm{prime} \big\}$ has infinite cardinality. 
 \end{theorem}
