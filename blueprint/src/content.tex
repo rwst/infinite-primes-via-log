@@ -25,15 +25,11 @@ Given the infinite set $S_x$ of all numbers $m$ that have only prime factors $p\
     $$\sum_{m\in S_x}\frac{1}{m} = \underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big).$$
 \end{lemma}
 
-\begin{definition-pre}
-\label{def:piReal}
-\lean{primeCountingReal}
-Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi(x)$, $x\in\mathbb{R}$ as $\pi(x) = \pi(|\lfloor x\rfloor|)$ for $x\ge2$, and $0$ otherwise.
-\end{definition-pre}
-
 \begin{lemma}
 \label{lem:lemma3}
-    $$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big) = \prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1}$$
+\lean{H_P4_3}
+\leanok
+    $$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big) = \underset{p\le x}{\prod_{p\in\mathbb{P}}}\frac{p}{p-1}$$
 \end{lemma}
 
 \begin{lemma}
@@ -48,11 +44,17 @@ $$\frac{p}{p-1} \le \frac{k+1}{k}.$$
 The current proof is by algebraic manipulation of fractions.
 \end{proof}
 
+\begin{definition-pre}
+\label{def:piReal}
+\lean{primeCountingReal}
+Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi(x)$, $x\in\mathbb{R}$ as $\pi(x) = \pi(|\lfloor x\rfloor|)$ for $x\ge2$, and $0$ otherwise.
+\end{definition-pre}
+
 \begin{lemma}
 \label{lem:lemma4}
 \lean{H_P4_4}
 \uses{lem:lemma4-1}
-$$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
+$$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\frac{p}{p-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
 \end{lemma}
 
 \begin{lemma}
@@ -113,8 +115,9 @@ The prime counting function in the real domain, $\pi:\ \mathbb{R} \mapsto \mathb
 
 \begin{theorem}
 \label{thm:infinite_primes}
-%\lean{infinity_of_primes₄}
+\lean{infinite_setOf_prime}
+\leanok
 \uses{thm:primeCountingReal_unbounded}
-The set $\mathbb{P} = \big\{p \in \mathbb{N} \ \mid \ p \ \mathrm{prime} \big\}$ has infinite cardinality. 
+The set $\mathbb{P} = \big\{p \in \mathbb{N} \ \mid \ p \ \mathrm{prime} \big\}$ is infinite. 
 \end{theorem}
 
