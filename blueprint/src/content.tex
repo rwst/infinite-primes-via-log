@@ -1,12 +1,59 @@
-The proof of the infinitude of primes via the fact that $\log x\le \pi(x)+1$ is the fourth proof of this theorem in Aigner \& Ziegler's "Proofs from THE BOOK", and attributed to Euler. I'm a hobby mathematician learning to formalize proofs in the Lean4 language. I chose this proof as a beginner project, not knowing exactly what I went into. However,  the best way to know in many occasions is to make a map. This is the reason for this blueprint. 
+The proof of the infinitude of primes via the fact that $\log x\le \pi(x)+1$ is the fourth proof of this theorem in Aigner \& Ziegler's "Proofs from THE BOOK", and attributed to Euler. I'm a hobby mathematician learning to formalize proofs in the Lean4 language. I chose this proof as a beginner project, not knowing exactly what I went into. However,  the best way to know in many occasions is to make a map, hence this blueprint. The aim of this formalization is to stay close to the text.
 
-The aim of this formalization is to stay close to the text. It turned out that the proof needs "obvious" facts about the primes, and to show these, we cannot use Mathlib4's set of primes, which has infinite cardinality. So, we construct \texttt{FinitePrimes} and prove some of their properties that we need.
+
+\begin{lemma}
+\label{lem:lemma0}
+\lean{log_le_harmonic}
+\leanok
+For $n\in\mathbb{N}$, $x\in\mathbb{R}$, $n\le x < n+1$,
+$$\log x \le \sum_{i=1}^n\frac1i.$$
+\end{lemma}
+
+\begin{lemma}
+\label{lem:lemma1}
+\lean{H_P4_1}
+\leanok
+Given the infinite set $S_x$ of all numbers $m$ that have only prime factors $p\le x$,
+    $$\sum_{k=1}^n\frac1k \le \sum_{m\in S_x}\frac{1}{m}. $$
+\end{lemma}
+
+\begin{lemma}
+\label{lem:lemma2}
+\lean{H_P4_2}
+\leanok
+Given the infinite set $S_x$ of all numbers $m$ that have only prime factors $p\le x$,
+    $$\sum_{m\in S_x}\frac{1}{m} = \underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big).$$
+\end{lemma}
 
 \begin{definition-pre}
 \label{def:piReal}
 \lean{primeCountingReal}
 Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi(x)$, $x\in\mathbb{R}$ as $\pi(x) = \pi(|\lfloor x\rfloor|)$ for $x\ge2$, and $0$ otherwise.
 \end{definition-pre}
+
+\begin{lemma}
+\label{lem:lemma3}
+    $$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big) = \prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1}$$
+\end{lemma}
+
+\begin{lemma}
+\label{lem:lemma4-1}
+\lean{H_P4_4a}
+\leanok
+For $k,p \in\mathbb{R}$, $k\ge0$, $p \ge k+1$,
+$$\frac{p}{p-1} \le \frac{k+1}{k}.$$
+\end{lemma}
+\begin{proof}
+\leanok
+The current proof is by algebraic manipulation of fractions.
+\end{proof}
+
+\begin{lemma}
+\label{lem:lemma4}
+\lean{H_P4_4}
+\uses{lem:lemma4-1}
+$$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
+\end{lemma}
 
 \begin{lemma}
 \label{lem:lemma5-2-1}
@@ -45,49 +92,7 @@ We transform into a product over the open interval and use the existing Mathlib4
 \uses{lem:lemma5-1, lem:lemma5-2}
 \leanok
 For $x\ge3$,
-    $$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi+1.$$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma4-1}
-\lean{H_P4_4a}
-\leanok
-For $k,p \in\mathbb{R}$, $k\ge0$, $p \ge k+1$,
-$$\frac{p}{p-1} \le \frac{k+1}{k}.$$
-\end{lemma}
-\begin{proof}
-\leanok
-The current proof is by algebraic manipulation of fractions.
-\end{proof}
-
-\begin{lemma}
-\label{lem:lemma4}
-\lean{H_P4_4}
-\uses{lem:lemma4-1}
-$$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma3}
-    $$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big) = \prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1}$$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma2}
-Given the infinite set $S_x$ of all numbers $m$ that have only prime factors $p\le x$,
-    $$\sum_{m\in S_x}\frac{1}{m} = \underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big).$$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma1}
-Given the infinite set $S_x$ of all numbers $m$ that have only prime factors $p\le x$,
-$$\sum_1^n\frac1n \le \sum_{m\in S_x}\frac{1}{m}. $$
-\end{lemma}
-
-\begin{lemma}
-\label{lem:lemma0}
-For $n\in\mathbb{N}$, $x\in\mathbb{R}$, $n\le x < n+1$,
-$$\log x \le \sum_{i=1}^n\frac1i.$$
+    $$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi(x)+1.$$
 \end{lemma}
 
 \begin{theorem}
