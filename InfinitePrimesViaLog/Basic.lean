@@ -12,9 +12,15 @@ variable (x : ℝ)
 def S₁ (x : ℝ) : Set ℕ :=
  { n | ∀ p, Nat.Prime p → p ∣ n → p ≤ x }
 
-lemma log_le_harmonic (n : ℕ) (hnx : n ≤ x) (hxn : x < n + 1) :
+lemma log_le_harmonic (n : ℕ) (hn : 0 < n) (hnx : n ≤ x) (hxn : x < n + 1) :
     Real.log x ≤ harmonic n := by
-  sorry
+  have hxpos : 0 < x := LT.lt.trans_le (cast_pos.mpr hn) hnx
+  have h₁ : Real.log x ≤ Real.log (n + 1 : ℝ) := by
+    rw [Real.log_le_log_iff hxpos]; linarith; linarith
+  have h₂ : Real.log (n + 1 : ℝ) ≤ harmonic n := by
+    norm_cast
+    exact log_add_one_le_harmonic n
+  exact LE.le.trans h₁ h₂
 
 lemma H_P4_1 (n : ℕ): (∑ k in Icc 1 n, (k : ℝ)⁻¹) ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := by sorry
 

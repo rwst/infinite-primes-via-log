@@ -8,6 +8,10 @@ The proof of the infinitude of primes via the fact that $\log x\le \pi(x)+1$ is 
 For $n\in\mathbb{N}$, $x\in\mathbb{R}$, $n\le x < n+1$,
 $$\log x \le \sum_{i=1}^n\frac1i.$$
 \end{lemma}
+\begin{proof}
+\leanok
+    We use Mathlib's lemma \texttt{log_add_one_le_harmonic} which proves the inequality for $n+1$.
+\end{proof}
 
 \begin{lemma}
 \label{lem:lemma1}
