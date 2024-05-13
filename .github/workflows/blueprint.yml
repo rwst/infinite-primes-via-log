@@ -65,6 +65,7 @@ jobs:
             cp blueprint/print/print.pdf docs/blueprint.pdf
             leanblueprint web
             cp -r blueprint/web docs/blueprint
+            cp index.html docs
 
       - name: Check declarations
         run: |
