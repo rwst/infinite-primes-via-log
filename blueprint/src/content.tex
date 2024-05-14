@@ -4,7 +4,7 @@ The orginal argument by Euler(E72) involves divergent infinite sums and, so, doe
 modern standards of rigor(San2006).
 
 (E72)
-Euler, Leonhard, Variae observations circa series infinitas, Commentarii academiae scientiarum
+Euler, Leonhard, Variae observationes circa series infinitas, Commentarii academiae scientiarum
 Petropolitanae 9 (1737), 1744, p. 160-188. Reprinted in Opera Omnia Series I volume 14, p. 216-244.
 Also available on line at \verb|www.EulerArchive.org|. 
 
@@ -21,17 +21,27 @@ $$\log x \le \sum_{i=1}^n\frac1i.$$
 \end{lemma}
 \begin{proof}
 \leanok
-    We use Mathlib lemma \verb|log_add_one_le_harmonic| which proves the inequality for $x=n+1$. The conditions are equivalent to $n=\lfloor x\rfloor$. 
+    The conditions are equivalent to $n=\lfloor x\rfloor$. We use Mathlib lemma \verb|log_add_one_le_harmonic| which proves the inequality for $x=n+1$. 
 \end{proof}
+
+\begin{definition}
+\label{def:S}
+\lean{S₁}
+\leanok
+    $$ S_x = \{1\}\ \cup\ \{m\,\big|\, \text{$m$ has only prime factors $p\le x$}\} $$
+\end{definition}
 
 \begin{lemma}
 \label{lem:lemma1}
 \lean{H_P4_1}
+\uses{def:S}
 \leanok
-    Given the infinite set $S_x$ of $\{1\}\cup$ all numbers $m$ that have only prime factors $p\le x$,
     $$\sum_{k=1}^n\frac1k \le \sum_{m\in S_x}\frac{1}{m}. $$
 \end{lemma}
-The argument in Aigner \& Ziegler, 6th ed. had the set not containing the inverse of~$1$ which
+\begin{proof}
+All of the inverses of the left sum are contained in the right sum.
+\end{proof}
+The argument in Aigner \& Ziegler, 6th ed. had the set $S_x$ not containing~$1$ which
 is problematic, because, while the inverses of all numbers $2\le k \le n$ are also contained
 in the right sum, this sum does not have the inverse of $1$, since $1$ does not have prime factors.
 So the right
@@ -41,15 +51,12 @@ although still being messy to prove.
 
 
 The addition of $\{1\}$ to $S_x$ also leads to a correct statement in the next step.
-\begin{proof}
-All of the inverses of the left sum are contained in the right sum.
-\end{proof}
 
 \begin{lemma}
 \label{lem:lemma2}
 \lean{H_P4_2}
+\uses{def:S}
 \leanok
-Given the infinite set $S_x$ of $\{1\}\cup$ all numbers $m$ that have only prime factors $p\le x$,
     $$\sum_{m\in S_x}\frac{1}{m} = \underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big).$$
 \end{lemma}
 
