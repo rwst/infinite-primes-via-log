@@ -11,17 +11,21 @@ Also available on line at \verb|www.EulerArchive.org|.
 (San2006)
 Sandifer, Ed, How Euler Did It, Infinitely many primes, March 2006, \begin{verbatim}http://eulerarchive.maa.org/hedi/HEDI-2006-03.pdf\end{verbatim}
 
+\begin{definition}
+\label{def:nx}
+In the following, the variables $n,x$, $n\in\mathbb{N}$, $x\in\mathbb{R}$, always satisfy
+$n\le x < n+1$, which is equivalent to $n=\lfloor x\rfloor$. 
+\end{definition}
 
 \begin{lemma}
 \label{lem:lemma0}
 \lean{log_le_harmonic}
 \leanok
-For $n\in\mathbb{N}$, $x\in\mathbb{R}$, $n\le x < n+1$,
 $$\log x \le \sum_{i=1}^n\frac1i.$$
 \end{lemma}
 \begin{proof}
 \leanok
-    The conditions are equivalent to $n=\lfloor x\rfloor$. We use Mathlib lemma \verb|log_add_one_le_harmonic| which proves the inequality for $x=n+1$. 
+    We use Mathlib lemma \verb|log_add_one_le_harmonic| which proves the inequality for $x=n+1$. 
 \end{proof}
 
 \begin{definition}
@@ -29,6 +33,7 @@ $$\log x \le \sum_{i=1}^n\frac1i.$$
 \lean{S₁}
 \leanok
     $$ S_x = \{1\}\ \cup\ \{m\,\big|\, \text{$m$ has only prime factors $p\le x$}\} $$
+    $$ = \{1\}\ \cup\ \text{the $\lfloor x\rfloor$- or $n$-smooth numbers} $$
 \end{definition}
 
 \begin{lemma}
