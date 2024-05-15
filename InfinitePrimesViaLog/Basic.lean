@@ -9,7 +9,7 @@ noncomputable def primeCountingReal (x : ℝ) : ℕ :=
 open Finset Nat BigOperators Filter
 variable (x : ℝ)
 
-def S₁ (x : ℝ) : Set ℕ := {1} ∪ Nat.smoothNumbers ⌊x⌋₊
+def S₁ (x : ℝ) : Set ℕ := smoothNumbers ⌊x⌋₊
 
 lemma log_le_harmonic (n : ℕ) (hn : 0 < n) (hnx : n ≤ x) (hxn : x < n + 1) :
     Real.log x ≤ harmonic n := by
