@@ -45,6 +45,9 @@ $$\log x \le \sum_{i=1}^n\frac1i.$$
 \end{lemma}
 \begin{proof}
 All of the inverses of the left sum are contained in the right sum.
+
+In Lean Mathlib, $n$-smooth numbers are defined as numbers all of whose prime factors are less than n.
+So, in the Lean proofs, a shift to $n+1$-smooth numbers is necessary.
 \end{proof}
 The argument in Aigner \& Ziegler, 6th ed. had the set $S_x$ not containing~$1$ which
 is problematic, because, while the inverses of all numbers $2\le k \le n$ are also contained
