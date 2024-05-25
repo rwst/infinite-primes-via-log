@@ -61,11 +61,8 @@ theorem Icc_ssubset_smoothNumbers (n : ℕ) (hn : 1 < n): Set.Icc 1 n ⊂ smooth
   refine (Set.ssubset_iff_of_subset ?h).mpr ?_
   . intro x; intro h
     rw [Set.mem_Icc] at h
-    exact mem_smoothNumbers_of_lt (lt_of_succ_le h.1) (lt_succ_of_le h.2)
-  . use n * 2
-    constructor
-    . apply two_n_smooth n hn
-    . apply Set.not_mem_Icc_of_gt; linarith
+    exact (mem_smoothNumbers_of_lt (lt_of_succ_le h.1) (lt_succ_of_le h.2))
+  . exact ⟨n * 2, And.intro (two_n_smooth n hn) (Set.not_mem_Icc_of_gt (by linarith))⟩
 
 lemma H_P4_1 (n : ℕ) (hn : 1 < n) (hnx : n = ⌊x⌋₊) : (∑ k ∈ Set.Icc 1 n, (k : ℝ)⁻¹) ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := by
   have h (hs : Set.Icc 1 n ⊆ S₁ x) : (∑' m : (S₁ x), 1 / (m : ℝ)) = (∑ k ∈ Set.Icc 1 n, 1 / (k : ℝ)) + (∑' m : ((S₁ x) \ (Set.Icc 1 n) : Set ℕ), 1 / (m : ℝ)):= by sorry

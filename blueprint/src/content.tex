@@ -13,9 +13,17 @@ Sandifer, Ed, How Euler Did It, Infinitely many primes, March 2006, \begin{verba
 
 \begin{definition}
 \label{def:nx}
-In the following, the variables $n,x$, $n\in\mathbb{N}$, $x\in\mathbb{R}$, always satisfy
+In the following, the variables $n\in\mathbb{N}$, $x\in\mathbb{R}$, always satisfy
 $n\le x < n+1$, which is equivalent to $n=\lfloor x\rfloor$. 
 \end{definition}
+
+%The argument in Aigner \& Ziegler, 6th ed. had the set $S_x$ not containing~$1$ which
+%is problematic, because, while the inverses of all numbers $2\le k \le n$ are also contained
+%in the right sum, this sum does not have the inverse of $1$, since $1$ does not have prime factors.
+%So the right
+%sum has to balance the inequality with the higher-power inverses. The case $n=4$ is a counterexample,
+%where the l.h.s.~is $\tfrac{25}{12}$ and the r.h.s. is~$2$. Only for $n\ge5$ does the statement seem valid,
+%although still being messy to prove.
 
 \begin{lemma}
 \label{lem:lemma0}
@@ -34,31 +42,14 @@ $$\log x \le \sum_{i=1}^n\frac1i.$$
 \leanok
     $$ S_x = \{1\}\ \cup\ \{m\,\big|\, \text{$m$ has only prime factors $p\le x$}\} $$
     $$ = \text{the $(\lfloor x\rfloor +1)$- or $(n+1)$-smooth numbers} $$
-\end{definition}
-
-\begin{lemma}
-\label{lem:lemma1}
-\lean{H_P4_1}
-\uses{def:S}
-\leanok
-    $$\sum_{k=1}^n\frac1k \le \sum_{m\in S_x}\frac{1}{m}. $$
-\end{lemma}
-\begin{proof}
-All of the inverses of the left sum are contained in the right sum.
-
 In Lean Mathlib, $n$-smooth numbers are defined as numbers all of whose prime factors are less than n.
 So, in the Lean proofs, a shift to $n+1$-smooth numbers is necessary.
-\end{proof}
-The argument in Aigner \& Ziegler, 6th ed. had the set $S_x$ not containing~$1$ which
-is problematic, because, while the inverses of all numbers $2\le k \le n$ are also contained
-in the right sum, this sum does not have the inverse of $1$, since $1$ does not have prime factors.
-So the right
-sum has to balance the inequality with the higher-power inverses. The case $n=4$ is a counterexample,
-where the l.h.s.~is $\tfrac{25}{12}$ and the r.h.s. is~$2$. Only for $n\ge5$ does the statement seem valid,
-although still being messy to prove.
+\end{definition}
 
-
-The addition of $\{1\}$ to $S_x$ also leads to a correct statement in the next step.
+To show that the sum of inverses of up to $n$ is less than the sum of inverses of all $(n+1)$-smooth
+numbers, it is formally necessary to first show that the second sum converges. Since the proof computes
+that sum anyway, we just change the order of dependent steps by determining the value of the sum,
+thus proving convergence, and finally comparing both sums.
 
 \begin{lemma}
 \label{lem:lemma2}
@@ -139,6 +130,18 @@ We transform into a product over the open interval and use the existing Mathlib4
 For $x\ge3$,
     $$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi(x)+1.$$
 \end{lemma}
+
+\begin{lemma}
+\label{lem:lemma1}
+\lean{H_P4_1}
+\uses{def:S, lem:lemma0, lem:lemma1, lem:lemma2, lem:lemma3, lem:lemma4, lem:lemma5}
+\leanok
+    $$\sum_{k=1}^n\frac1k \le \sum_{m\in S_x}\frac{1}{m}. $$
+\end{lemma}
+\begin{proof}
+All of the inverses of the left sum are contained in the right sum.
+\end{proof}
+
 
 \begin{theorem}
 \label{thm:log_le_primeCountingReal_add_one}
