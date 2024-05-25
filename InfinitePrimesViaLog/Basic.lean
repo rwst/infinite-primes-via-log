@@ -53,7 +53,7 @@ lemma two_n_smooth (n : ℕ) (hn : 1 < n) : n * 2 ∈ (n + 1).smoothNumbers := b
     apply mem_smoothNumbers_of_lt (zero_lt_of_lt hn); linarith
   have h2 : 2 ∈ (n + 1).smoothNumbers := by
     apply mem_smoothNumbers_of_lt ofNat_pos; linarith
-  apply mul_mem_smoothNumbers n 2 (n + 1)
+  apply mul_mem_smoothNumbers
   assumption'
 
 /- The natural numbers `[1 ... n]` are a strict subset of the `(n+1)`-smooth numbers -/
