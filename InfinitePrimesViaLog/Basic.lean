@@ -26,32 +26,35 @@ lemma mem_smoothNumbers_of_lt {m n : ℕ} (hm : 0 < m) (hmn : m < n) : m ∈ n.s
   smoothNumbers_eq_factoredNumbers _ ▸ ⟨not_eq_zero_of_lt hm,
   fun _ h => Finset.mem_range.mpr <| lt_of_le_of_lt (le_of_mem_factors h) hmn⟩
 
-/-- The prime factors of `m > 1` are contained in the set of primes below `n`
-  if `m` is a `n`-smooth number -/
-lemma primeFactors_subset_of_mem_smoothNumbers (m n : ℕ) (hms : m ∈ n.smoothNumbers)
-    : m.primeFactors ⊆ n.primesBelow :=
-  have hxle (m n x : ℕ) (hpf : x ∈ m.primeFactors) (hms : m ∈ smoothNumbers n)
-      : x < n :=
-    match mem_smoothNumbers.mp hms with
-    | ⟨ _, h2 ⟩  => h2 x (mem_primeFactors_iff_mem_factors.mp hpf)
-  fun w hh => mem_primesBelow.mpr ⟨hxle m n w hh hms, prime_of_mem_primeFactors hh⟩
+/-- The prime factors of an `n`-smooth number are contained in the set of primes below `n`. -/
+lemma primeFactors_subset_of_mem_smoothNumbers {m n : ℕ} (hms : m ∈ n.smoothNumbers) :
+    m.primeFactors ⊆ n.primesBelow :=
+  have hxle {x : ℕ} (hpf : x ∈ m.primeFactors) : x < n := by
+    obtain ⟨_, h⟩ := mem_smoothNumbers.mp hms
+    exact h x (mem_primeFactors_iff_mem_factors.mp hpf)
+  fun _ h ↦ mem_primesBelow.mpr ⟨hxle h, prime_of_mem_primeFactors h⟩
 
-/-- `m > 1` is a `n`-smooth number if all prime factors are contained in the set of
-  primes below `n` -/
-lemma mem_smoothNumbers_of_primeFactors_subset (m n : ℕ) (hm : m ≠ 0)
+/-- `m` is an `n`-smooth number if all of its prime factors are contained in the set of
+  primes below `n`. -/
+lemma mem_smoothNumbers_of_primeFactors_subset {m n : ℕ} (hm : m ≠ 0)
     (hp : m.primeFactors ⊆ n.primesBelow) : m ∈ n.smoothNumbers :=
-  ⟨ hm, fun _ h' => lt_of_mem_primesBelow <| hp <| mem_primeFactors_iff_mem_factors.mpr h' ⟩
+  ⟨hm, fun _ h ↦ lt_of_mem_primesBelow <| hp <| mem_primeFactors_iff_mem_factors.mpr h⟩
 
-/-- The product of two `n`-smooth numbers is a `n`-smooth number -/
-theorem mul_mem_smoothNumbers (m₁ m₂ n : ℕ)
-    (hm1 : m₁ ∈ n.smoothNumbers) (hm2 : m₂ ∈ n.smoothNumbers)
-    : (m₁ * m₂) ∈ n.smoothNumbers := by
-  have hm1z : m₁ ≠ 0 := ne_zero_of_mem_smoothNumbers hm1
-  have hm2z : m₂ ≠ 0 := ne_zero_of_mem_smoothNumbers hm2
-  apply primeFactors_subset_of_mem_smoothNumbers at hm1
-  apply primeFactors_subset_of_mem_smoothNumbers at hm2
-  exact mem_smoothNumbers_of_primeFactors_subset (m₁ * m₂) n (mul_ne_zero hm1z hm2z)
-    <| (primeFactors_mul hm1z hm2z) ▸ Finset.union_subset hm1 hm2
+/-- The product of two `n`-smooth numbers is an `n`-smooth number -/
+theorem mul_mem_smoothNumbers {m₁ m₂ n : ℕ}
+    (hm1 : m₁ ∈ n.smoothNumbers) (hm2 : m₂ ∈ n.smoothNumbers) : m₁ * m₂ ∈ n.smoothNumbers :=
+  have hm1' := primeFactors_subset_of_mem_smoothNumbers hm1
+  have hm2' := primeFactors_subset_of_mem_smoothNumbers hm2
+  mem_smoothNumbers_of_primeFactors_subset (mul_ne_zero hm1.1 hm2.1)
+    <| primeFactors_mul hm1.1 hm2.1 ▸ Finset.union_subset hm1' hm2'
+
+lemma two_n_smooth (n : ℕ) (hn : 1 < n) : n * 2 ∈ (n + 1).smoothNumbers := by
+  have h1 : n ∈ (n + 1).smoothNumbers := by
+    apply mem_smoothNumbers_of_lt (zero_lt_of_lt hn); linarith
+  have h2 : 2 ∈ (n + 1).smoothNumbers := by
+    apply mem_smoothNumbers_of_lt ofNat_pos; linarith
+  apply mul_mem_smoothNumbers n 2 (n + 1)
+  assumption'
 
 /- The natural numbers `[1 ... n]` are a strict subset of the `(n+1)`-smooth numbers -/
 theorem Icc_ssubset_smoothNumbers (n : ℕ) (hn : 1 < n): Set.Icc 1 n ⊂ smoothNumbers (n + 1) := by
@@ -61,12 +64,7 @@ theorem Icc_ssubset_smoothNumbers (n : ℕ) (hn : 1 < n): Set.Icc 1 n ⊂ smooth
     exact mem_smoothNumbers_of_lt (lt_of_succ_le h.1) (lt_succ_of_le h.2)
   . use n * 2
     constructor
-    . have h1 : n ∈ (n + 1).smoothNumbers := by
-        apply mem_smoothNumbers_of_lt (zero_lt_of_lt hn); linarith
-      have h2 : 2 ∈ (n + 1).smoothNumbers := by
-        apply mem_smoothNumbers_of_lt ofNat_pos; linarith
-      apply mul_mem_smoothNumbers n 2 (n + 1)
-      assumption'
+    . apply two_n_smooth n hn
     . apply Set.not_mem_Icc_of_gt; linarith
 
 lemma H_P4_1 (n : ℕ) (hn : 1 < n) (hnx : n = ⌊x⌋₊) : (∑ k ∈ Set.Icc 1 n, (k : ℝ)⁻¹) ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := by
