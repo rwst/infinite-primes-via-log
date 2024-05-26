@@ -23,8 +23,18 @@ lemma log_le_harmonic (n : ℕ) (hn : 0 < n) (hnx : n ≤ x) (hxn : x < n + 1) :
 
 lemma H_P4_2 : (∑' m : (S₁ x), (m : ℝ)⁻¹) = (∏ p ∈ primesBelow ⌊x⌋.natAbs, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
 
-lemma H_P4_3 : (∏ p in primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) ≤ (∏ p ∈ primesBelow ⌊x⌋₊, (p : ℝ) / (p - 1)) := by
-  sorry
+lemma H_P4_3 : (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, ((p : ℝ) ^ k)⁻¹)) =
+    (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) := by
+  have h_p_nonzero (p' : ℕ) (hp : p' ∈ ⌊x⌋₊.primesBelow) : p' ≠ 0 :=
+      Nat.Prime.ne_zero (mem_primesBelow.mp hp).2
+  refine Finset.prod_congr rfl fun x hx ↦ ?_
+  rw [(inv_div (_ - 1 : ℝ) (_ : ℝ)).symm]
+  rw [sub_div, div_self (by exact_mod_cast h_p_nonzero x hx), one_div]
+  rw [← tsum_geometric_of_lt_one]
+  simp_rw [inv_pow]
+  simp only [ne_eq, forall_mem_not_eq', inv_nonneg, cast_nonneg]
+  rw [mem_primesBelow] at hx
+  exact inv_lt_one <| one_lt_cast.mpr <| Prime.one_lt hx.2
 
 lemma H_P4_4a {k p: ℝ} (hk: k > 0) (hp: p ≥ k + 1): p / (p - 1) ≤ (k + 1) / k := by
   have h_k_nonzero: k ≠ 0 := ne_iff_lt_or_gt.mpr (Or.inr hk)

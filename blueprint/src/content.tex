@@ -43,7 +43,7 @@ $$\log x \le \sum_{i=1}^n\frac1i.$$
     $$ S_x = \{1\}\ \cup\ \{m\,\big|\, \text{$m$ has only prime factors $p\le x$}\} $$
     $$ = \text{the $(\lfloor x\rfloor +1)$- or $(n+1)$-smooth numbers} $$
 In Lean Mathlib, $n$-smooth numbers are defined as numbers all of whose prime factors are less than $n$.
-So, in the Lean proofs, a shift to $n+1$-smooth numbers is necessary.
+    So, in the Lean proofs, a shift to $(n+1)$-smooth numbers is necessary.
 \end{definition}
 
 To show that the sum of inverses of up to $n$ is less than the sum of inverses of all $(n+1)$-smooth
@@ -65,6 +65,10 @@ the bound, thus proving convergence, and finally comparing both sums.
 \leanok
     $$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\Big(\sum_{k\in\mathbb{N}}\frac{1}{p^k}\Big) = \underset{p\le x}{\prod_{p\in\mathbb{P}}}\frac{p}{p-1}$$
 \end{lemma}
+\begin{proof}
+\leanok
+    By algebraic manipulation around the geometric series formula (\verb+tsum_geometric_of_lt_one+ in Mathlib4).
+\end{proof}
 
 \begin{lemma}
 \label{lem:lemma4-1}
