@@ -89,11 +89,21 @@ Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi(x)$
 \end{definition-pre}
 
 \begin{lemma}
+\label{lem:lemma4-2}
+\lean{H_P4_4b}
+    For all $3\le k\le \pi(x)$, the $k$th prime $p_k \ge k+2$.
+\end{lemma}
+
+\begin{lemma}
 \label{lem:lemma4}
 \lean{H_P4_4}
-\uses{lem:lemma4-1}
+\uses{lem:lemma4-1, lem:lemma4-2}
 $$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\frac{p}{p-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
 \end{lemma}
+This lemma needs lemma \ref{lem:lemma4-1} which has the condition $p\ge k+1$ that we provide with
+lemma \ref{lem:lemma4-2}. Since $k$ is never 
+    greater than $\pi(p)$, we don't need to assume there exist primes greater those we use in the
+    product, i.e., $p\le x$.
 
 \begin{lemma}
 \label{lem:lemma5-2-1}
