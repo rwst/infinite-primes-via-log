@@ -46,6 +46,9 @@ lemma H_P4_4a {k p: ℝ} (hk: k > 0) (hp: p ≥ k + 1): p / (p - 1) ≤ (k + 1) 
     one_div_le_one_div h_p_pred_pos hk, le_sub_iff_add_le]
   exact hp
 
+theorem H_P4_4b (k : ℕ) (hk : k ∈ Finset.Icc 3 (primeCountingReal x))
+    : nth Nat.Prime k ≥ k + 2 := by sorry
+
 theorem monotone_primeCountingReal : Monotone primeCountingReal := by
   intro a b hab
   unfold primeCountingReal
@@ -58,29 +61,14 @@ theorem monotone_primeCountingReal : Monotone primeCountingReal := by
     · simp only [ha, hb]
       exact monotone_primeCounting <| Nat.floor_mono hab
 
-theorem primeCountingReal_three : primeCountingReal 3 = 2 := by
+lemma primeCountingReal_three : primeCountingReal 3 = 2 := by
   unfold primeCountingReal
   norm_num
   have : π 3 = 2 := by decide
   sorry
 
-theorem primeCountingReal_ge_two (hx : x ≥ 3) : primeCountingReal x ≥ 2 := by
+lemma primeCountingReal_ge_two (hx : x ≥ 3) : primeCountingReal x ≥ 2 := by
  sorry
-
-/-theorem nth_prime_ge_add_two : nth Nat.Prime n ≥ n + 2 := by
-  induction' n with n ih
-  . norm_num
-    rw [le_iff_eq_or_lt]
-    exact Or.inl zeroth_prime_eq_two.symm
-  . rw [succ_eq_add_one]
-    rw [ge_iff_le, ← add_le_add_iff_right 1, add_assoc] at ih
-    norm_num at ih
-    simp_arith
-    have h : nth Nat.Prime n + 1 ≤ nth Nat.Prime (n + 1) := by
-      rw [succ_le_iff, nth_lt_nth]
-      exact lt_add_one n
-      sorry
-    exact LE.le.trans ih h -/
 
 lemma H_P4_4 : (∏ p ∈ primesBelow ⌊x⌋₊, (p : ℝ) / (p - 1))
     ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
