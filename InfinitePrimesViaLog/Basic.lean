@@ -83,7 +83,7 @@ lemma primeCountingReal_ge_two (hx : x ≥ 3) : primeCountingReal x ≥ 2 := by
  sorry
 
 lemma H_P4_4 : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k + 1 : ℝ) / nth (PrimeBelow ⌊x⌋₊) k)
-    ≤ (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (k + 1 : ℝ) / k) := by
+    ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
   sorry
 
 lemma prod_Icc_succ_div (n : ℕ) (hn : 2 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) : ℝ) / x) = n + 1 := by
@@ -101,9 +101,9 @@ lemma prod_Icc_succ_div (n : ℕ) (hn : 2 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) 
     rw [h]
     ring
 
-lemma H_P4_5 (hx : x ≥ 3) : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (k + 1 : ℝ) / k) = primeCountingReal x + 1 := by sorry
---  rw [prod_Icc_succ_div (primeCountingReal x)
---    (primeCountingReal_three ▸ Monotone.imp monotone_primeCountingReal hx)]
+lemma H_P4_5 (hx : x ≥ 3) : (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) = primeCountingReal x + 1 := by
+  rw [prod_Icc_succ_div (primeCountingReal x)
+    (primeCountingReal_three ▸ Monotone.imp monotone_primeCountingReal hx)]
 
 --lemma H_P4_5' : (∏ k in Icc 1 (primeCountingReal x), (nth primesBelow k : ℝ) / ((nth primesBelow k) - 1))
 --    ≤ (∏ k in Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
@@ -184,10 +184,10 @@ theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ)
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := H_P4_2 x
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) := H_P4_3 x
     _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k + 1 : ℝ) / nth (PrimeBelow ⌊x⌋₊) k) := H_P4_3a x
-    _ ≤ (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (k + 1 : ℝ) / k) := H_P4_4 x
+    _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := H_P4_4 x
     _ = primeCountingReal x + 1 := H_P4_5 x hxg3
 
 theorem primeCountingReal_unbounded : Tendsto primeCountingReal atTop atTop := by sorry
 
-theorem infinite_setOf_prime₄ : { p | Nat.Prime p }.Infinite :=
+theorem infinite_setOf_prime : { p | Nat.Prime p }.Infinite :=
   sorry
