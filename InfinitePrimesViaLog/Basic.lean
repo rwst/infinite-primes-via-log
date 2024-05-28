@@ -170,15 +170,15 @@ lemma H_P4_1 (n : ℕ) (hn : 1 < n) (hnx : n = ⌊x⌋₊) : (∑ k ∈ Set.Icc 
   rw [h <| subset_of_ssubset <| hnx.symm ▸ (Icc_ssubset_smoothNumbers n hn)]
   exact (le_add_iff_nonneg_right (∑ k ∈ Set.Icc 1 n, 1 / (k : ℝ))).mpr h'
 
-theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ) (hn : 0 < n) (hxge : x ≥ n) (hxlt : x < n + 1) :
+theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ) (hn : 0 < n) (hxg3 : 3 ≤ x) (hxgn : x ≥ n) (hxlt : x < n + 1) :
       Real.log x ≤ primeCountingReal x + 1 :=
   calc
-    Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := log_le_harmonic x n hn hxge hxlt
+    Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := log_le_harmonic x n hn hxgn hxlt
     _ ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := by sorry
-    _ ≤ (∏ p ∈ primesBelow ⌊x⌋.natAbs, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
-    _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (nth Nat.Prime k : ℝ) / ((nth Nat.Prime k) - 1)) := by sorry
+    _ ≤ (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
+    _ = (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) := H_P4_3 x
     _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by sorry
-    _ ≤ primeCountingReal x + 1 := by sorry
+    _ = primeCountingReal x + 1 := H_P4_5 x hxg3
 
 theorem primeCountingReal_unbounded : Tendsto primeCountingReal atTop atTop := by sorry
 
