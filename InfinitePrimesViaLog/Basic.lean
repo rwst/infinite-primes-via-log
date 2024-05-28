@@ -11,15 +11,23 @@ variable (x : ℝ)
 
 def S₁ (x : ℝ) : Set ℕ := smoothNumbers (⌊x⌋₊ + 1)
 
+
 lemma log_le_harmonic (n : ℕ) (hn : 0 < n) (hnx : n ≤ x) (hxn : x < n + 1) :
-    Real.log x ≤ harmonic n := by
+    Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ :=
   have hxpos : 0 < x := LT.lt.trans_le (cast_pos.mpr hn) hnx
-  have h₁ : Real.log x ≤ Real.log (n + 1 : ℝ) := by
-    rw [Real.log_le_log_iff hxpos]; linarith; linarith
-  have h₂ : Real.log (n + 1 : ℝ) ≤ harmonic n := by
-    norm_cast
-    exact log_add_one_le_harmonic n
-  exact LE.le.trans h₁ h₂
+  calc
+    Real.log x ≤ Real.log (n + 1 : ℝ) := by
+        rw [Real.log_le_log_iff hxpos]; linarith; linarith
+    _ ≤ harmonic n := by
+        norm_cast; exact log_add_one_le_harmonic n
+    _ = ∑ k ∈ range n, (k + 1 : ℝ)⁻¹ := by
+        unfold harmonic
+        simp_all only [cast_add, cast_one, Rat.cast_sum, Rat.cast_inv,
+          Rat.cast_add, Rat.cast_natCast, Rat.cast_one]
+    _ = ∑ k ∈ Finset.Ico 1 (n + 1), (k : ℝ)⁻¹ := by
+        simp_rw [Finset.sum_Ico_eq_sum_range, Nat.add_one_sub_one, add_comm]
+        simp_all only [cast_add, cast_one]
+    _ = ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := by rfl
 
 lemma H_P4_2 : (∑' m : (S₁ x), (m : ℝ)⁻¹) = (∏ p ∈ primesBelow ⌊x⌋.natAbs, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
 
@@ -46,8 +54,11 @@ lemma H_P4_4a {k p: ℝ} (hk: k > 0) (hp: p ≥ k + 1): p / (p - 1) ≤ (k + 1) 
     one_div_le_one_div h_p_pred_pos hk, le_sub_iff_add_le]
   exact hp
 
-theorem H_P4_4b (k : ℕ) (hk : k ∈ Finset.Icc 3 (primeCountingReal x))
-    : nth Nat.Prime k ≥ k + 2 := by sorry
+def PrimeBelow (p n : ℕ) :=
+  Irreducible p ∧ p < n
+
+theorem H_P4_4b (k : ℕ) (hk₁ : k ≥ 3) (hk₂ : k < primeCountingReal x)
+    : nth (PrimeBelow ⌊x⌋.natAbs) k ≥ k + 2 := by sorry
 
 theorem monotone_primeCountingReal : Monotone primeCountingReal := by
   intro a b hab
@@ -159,10 +170,10 @@ lemma H_P4_1 (n : ℕ) (hn : 1 < n) (hnx : n = ⌊x⌋₊) : (∑ k ∈ Set.Icc 
   rw [h <| subset_of_ssubset <| hnx.symm ▸ (Icc_ssubset_smoothNumbers n hn)]
   exact (le_add_iff_nonneg_right (∑ k ∈ Set.Icc 1 n, 1 / (k : ℝ))).mpr h'
 
-theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ) (hxge : x ≥ n) (hxlt : x < n + 1) :
+theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ) (hn : 0 < n) (hxge : x ≥ n) (hxlt : x < n + 1) :
       Real.log x ≤ primeCountingReal x + 1 :=
   calc
-    Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := by sorry
+    Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := log_le_harmonic x n hn hxge hxlt
     _ ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := by sorry
     _ ≤ (∏ p ∈ primesBelow ⌊x⌋.natAbs, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
     _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (nth Nat.Prime k : ℝ) / ((nth Nat.Prime k) - 1)) := by sorry
