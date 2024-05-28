@@ -96,10 +96,19 @@ Given the prime counting function $\pi(n)$, $n\in\mathbb{N}$, we define $\pi(x)$
 \end{lemma}
 
 \begin{lemma}
+\label{lem:lemma3a}
+\lean{H_P4_3a}
+\leanok
+$$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\frac{p}{p-1} = \prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1}.$$
+\end{lemma}
+From here on, we start indices under the displayed products with $1$,
+but use $0$ as start in the Lean proofs, also because $p_0=2$ in Lean.
+
+\begin{lemma}
 \label{lem:lemma4}
 \lean{H_P4_4}
 \uses{lem:lemma4-1, lem:lemma4-2}
-$$\underset{p\le x}{\prod_{p\in\mathbb{P}}}\frac{p}{p-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
+$$\prod_{k=1}^{\pi(x)}\frac{p_k}{p_k-1} \le \prod_{k=1}^{\pi(x)}\frac{k+1}{k}.$$
 \end{lemma}
 This lemma needs lemma \ref{lem:lemma4-1} which has the condition $p\ge k+1$ that we provide with
 lemma \ref{lem:lemma4-2}. Since $k$ is never 
@@ -155,7 +164,7 @@ For $x\ge3$,
 \label{lem:lemma1}
 \lean{H_P4_1}
 \leanok
-\uses{def:S, lem:lemma0, lem:lemma2, lem:lemma3, lem:lemma4, lem:lemma5}
+\uses{def:S, lem:lemma0, lem:lemma2, lem:lemma3, lem:lemma3a, lem:lemma4, lem:lemma5}
     $$\sum_{k=1}^n\frac1k \le \sum_{m\in S_x}\frac{1}{m}. $$
 \end{lemma}
 \begin{proof}

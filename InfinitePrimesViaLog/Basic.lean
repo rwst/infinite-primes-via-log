@@ -29,7 +29,8 @@ lemma log_le_harmonic (n : ℕ) (hn : 0 < n) (hnx : n ≤ x) (hxn : x < n + 1) :
         simp_all only [cast_add, cast_one]
     _ = ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := by rfl
 
-lemma H_P4_2 : (∑' m : (S₁ x), (m : ℝ)⁻¹) = (∏ p ∈ primesBelow ⌊x⌋.natAbs, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
+lemma H_P4_2 : (∑' m : (S₁ x), (m : ℝ)⁻¹)
+    = (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
 
 lemma H_P4_3 : (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, ((p : ℝ) ^ k)⁻¹)) =
     (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) := by
@@ -81,9 +82,8 @@ lemma primeCountingReal_three : primeCountingReal 3 = 2 := by
 lemma primeCountingReal_ge_two (hx : x ≥ 3) : primeCountingReal x ≥ 2 := by
  sorry
 
-lemma H_P4_4 : (∏ p ∈ primesBelow ⌊x⌋₊, (p : ℝ) / (p - 1))
-    ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
-  --rw [H_P4_4a]
+lemma H_P4_4 : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k + 1 : ℝ) / nth (PrimeBelow ⌊x⌋₊) k)
+    ≤ (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (k + 1 : ℝ) / k) := by
   sorry
 
 lemma prod_Icc_succ_div (n : ℕ) (hn : 2 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) : ℝ) / x) = n + 1 := by
@@ -101,9 +101,9 @@ lemma prod_Icc_succ_div (n : ℕ) (hn : 2 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) 
     rw [h]
     ring
 
-lemma H_P4_5 (hx : x ≥ 3) : (∏ k ∈ Icc 1 (primeCountingReal x), ((k + 1) : ℝ)/ k) = primeCountingReal x + 1 := by
-  rw [prod_Icc_succ_div (primeCountingReal x)
-    (primeCountingReal_three ▸ Monotone.imp monotone_primeCountingReal hx)]
+lemma H_P4_5 (hx : x ≥ 3) : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (k + 1 : ℝ) / k) = primeCountingReal x + 1 := by sorry
+--  rw [prod_Icc_succ_div (primeCountingReal x)
+--    (primeCountingReal_three ▸ Monotone.imp monotone_primeCountingReal hx)]
 
 --lemma H_P4_5' : (∏ k in Icc 1 (primeCountingReal x), (nth primesBelow k : ℝ) / ((nth primesBelow k) - 1))
 --    ≤ (∏ k in Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
@@ -171,18 +171,23 @@ lemma H_P4_1 (n : ℕ) (hn : 1 < n) (hnx : n = ⌊x⌋₊) :
   rw [h <| subset_of_ssubset <| hnx.symm ▸ (Icc_ssubset_smoothNumbers n hn)]
   exact (le_add_iff_nonneg_right (∑ k ∈ Icc 1 n, 1 / (k : ℝ))).mpr h'
 
+lemma H_P4_3a : (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) =
+    (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
+    (nth (PrimeBelow ⌊x⌋₊) k + 1 : ℝ) / nth (PrimeBelow ⌊x⌋₊) k) := by sorry
+
 theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ)
     (hn : 1 < n) (hnx : n = ⌊x⌋₊) (hxg3 : 3 ≤ x) (hxgn : x ≥ n) (hxlt : x < n + 1) :
     Real.log x ≤ primeCountingReal x + 1 :=
   calc
     Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := log_le_harmonic x n (zero_lt_of_lt hn) hxgn hxlt
     _ ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := H_P4_1 x n hn hnx
-    _ ≤ (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := by sorry
+    _ = (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := H_P4_2 x
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) := H_P4_3 x
-    _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by sorry
+    _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k + 1 : ℝ) / nth (PrimeBelow ⌊x⌋₊) k) := H_P4_3a x
+    _ ≤ (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (k + 1 : ℝ) / k) := H_P4_4 x
     _ = primeCountingReal x + 1 := H_P4_5 x hxg3
 
 theorem primeCountingReal_unbounded : Tendsto primeCountingReal atTop atTop := by sorry
 
-theorem infinite_setOf_prime : { p | Nat.Prime p }.Infinite :=
+theorem infinite_setOf_prime₄ : { p | Nat.Prime p }.Infinite :=
   sorry
