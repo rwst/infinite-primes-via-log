@@ -11,6 +11,13 @@ variable (x : ℝ)
 
 def S₁ (x : ℝ) : Set ℕ := smoothNumbers (⌊x⌋₊ + 1)
 
+/- This is already in Mathlib -/
+lemma mem_smoothNumbers_of_lt' {m n : ℕ} (hm : 0 < m) (hmn : m < n) : m ∈ n.smoothNumbers := by sorry
+
+/- This is already in Mathlib -/
+theorem mul_mem_smoothNumbers' {m₁ m₂ n : ℕ}
+    (hm1 : m₁ ∈ n.smoothNumbers) (hm2 : m₂ ∈ n.smoothNumbers) : m₁ * m₂ ∈ n.smoothNumbers := by sorry
+
 lemma primeCountingReal_pos (hxg3 : 3 ≤ x) : primeCountingReal x > 0 := by
   have count_primes_upto_four : 0 < count Nat.Prime (⌊3⌋₊ + 1) := by rw [floor_nat]; norm_num; decide
   unfold primeCountingReal
@@ -121,10 +128,10 @@ lemma H_P4_5 (hx : x ≥ 3) : (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : �
 
 lemma two_n_smooth (n : ℕ) (hn : 1 < n) : n * 2 ∈ (n + 1).smoothNumbers := by
   have h1 : n ∈ (n + 1).smoothNumbers := by
-    apply mem_smoothNumbers_of_lt (zero_lt_of_lt hn); linarith
+    apply mem_smoothNumbers_of_lt' (zero_lt_of_lt hn); linarith
   have h2 : 2 ∈ (n + 1).smoothNumbers := by
-    apply mem_smoothNumbers_of_lt ofNat_pos; linarith
-  apply mul_mem_smoothNumbers
+    apply mem_smoothNumbers_of_lt' ofNat_pos; linarith
+  apply mul_mem_smoothNumbers'
   assumption'
 
 /- The natural numbers `[1 ... n]` are a strict subset of the `(n+1)`-smooth numbers -/
@@ -132,7 +139,7 @@ theorem Icc_ssubset_smoothNumbers (n : ℕ) (hn : 1 < n): Set.Icc 1 n ⊂ smooth
   refine (Set.ssubset_iff_of_subset ?h).mpr ?_
   . intro x; intro h
     rw [Set.mem_Icc] at h
-    exact (mem_smoothNumbers_of_lt (lt_of_succ_le h.1) (lt_succ_of_le h.2))
+    exact (mem_smoothNumbers_of_lt' (lt_of_succ_le h.1) (lt_succ_of_le h.2))
   . exact ⟨n * 2, And.intro (two_n_smooth n hn) (Set.not_mem_Icc_of_gt (by linarith))⟩
 
 /--lemma Nonempty_S1_diff (n : ℕ) (hn : 1 < n) (hnx : n = ⌊x⌋₊)
