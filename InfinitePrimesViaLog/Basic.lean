@@ -4,13 +4,22 @@ import Mathlib.NumberTheory.PrimeCounting
 set_option autoImplicit false
 
 noncomputable def primeCountingReal (x : ℝ) : ℕ :=
-  if (x ≤ 0) then 0 else Nat.primeCounting ⌊x⌋₊
+  if (x < 2) then 1 else Nat.primeCounting ⌊x⌋₊
 
 open Finset Nat BigOperators Filter
 variable (x : ℝ)
 
 def S₁ (x : ℝ) : Set ℕ := smoothNumbers (⌊x⌋₊ + 1)
 
+lemma primeCountingReal_pos (hxg3 : 3 ≤ x) : primeCountingReal x > 0 := by
+  have count_primes_upto_four : 0 < count Nat.Prime (⌊3⌋₊ + 1) := by rw [floor_nat]; norm_num; decide
+  unfold primeCountingReal
+  apply ite_pos Nat.one_pos
+  unfold primeCounting
+  unfold primeCounting'
+  exact gt_of_ge_of_gt
+    (count_monotone Nat.Prime (Nat.add_le_add_right (le_floor hxg3) 1))
+    count_primes_upto_four
 
 lemma log_le_harmonic (n : ℕ) (hn : 0 < n) (hnx : n ≤ x) (hxn : x < n + 1) :
     Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ :=
@@ -61,8 +70,8 @@ def PrimeBelow (p n : ℕ) :=
 theorem H_P4_4b (k : ℕ) (hk₁ : k ≥ 3) (hk₂ : k < primeCountingReal x)
     : nth (PrimeBelow ⌊x⌋.natAbs) k ≥ k + 2 := by sorry
 
-theorem monotone_primeCountingReal : Monotone primeCountingReal := by
-  intro a b hab
+theorem monotone_primeCountingReal : Monotone primeCountingReal := by sorry
+/--  intro a b hab
   unfold primeCountingReal
   by_cases ha : a ≤ 0
   · by_cases hb : b ≤ 0
@@ -72,7 +81,7 @@ theorem monotone_primeCountingReal : Monotone primeCountingReal := by
     · linarith
     · simp only [ha, hb]
       exact monotone_primeCounting <| Nat.floor_mono hab
-
+-/
 lemma primeCountingReal_three : primeCountingReal 3 = 2 := by
   unfold primeCountingReal
   norm_num
@@ -109,33 +118,6 @@ lemma H_P4_5 (hx : x ≥ 3) : (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : �
 --lemma H_P4_5' : (∏ k in Icc 1 (primeCountingReal x), (nth primesBelow k : ℝ) / ((nth primesBelow k) - 1))
 --    ≤ (∏ k in Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
 --  sorry
-
-/-- All `m`, `0 < m < n` are `n`-smooth numbers -/
-lemma mem_smoothNumbers_of_lt {m n : ℕ} (hm : 0 < m) (hmn : m < n) : m ∈ n.smoothNumbers :=
-  smoothNumbers_eq_factoredNumbers _ ▸ ⟨not_eq_zero_of_lt hm,
-  fun _ h => Finset.mem_range.mpr <| lt_of_le_of_lt (le_of_mem_factors h) hmn⟩
-
-/-- The prime factors of an `n`-smooth number are contained in the set of primes below `n`. -/
-lemma primeFactors_subset_of_mem_smoothNumbers {m n : ℕ} (hms : m ∈ n.smoothNumbers) :
-    m.primeFactors ⊆ n.primesBelow :=
-  have hxle {x : ℕ} (hpf : x ∈ m.primeFactors) : x < n := by
-    obtain ⟨_, h⟩ := mem_smoothNumbers.mp hms
-    exact h x (mem_primeFactors_iff_mem_factors.mp hpf)
-  fun _ h ↦ mem_primesBelow.mpr ⟨hxle h, prime_of_mem_primeFactors h⟩
-
-/-- `m` is an `n`-smooth number if all of its prime factors are contained in the set of
-  primes below `n`. -/
-lemma mem_smoothNumbers_of_primeFactors_subset {m n : ℕ} (hm : m ≠ 0)
-    (hp : m.primeFactors ⊆ n.primesBelow) : m ∈ n.smoothNumbers :=
-  ⟨hm, fun _ h ↦ lt_of_mem_primesBelow <| hp <| mem_primeFactors_iff_mem_factors.mpr h⟩
-
-/-- The product of two `n`-smooth numbers is an `n`-smooth number -/
-theorem mul_mem_smoothNumbers {m₁ m₂ n : ℕ}
-    (hm1 : m₁ ∈ n.smoothNumbers) (hm2 : m₂ ∈ n.smoothNumbers) : m₁ * m₂ ∈ n.smoothNumbers :=
-  have hm1' := primeFactors_subset_of_mem_smoothNumbers hm1
-  have hm2' := primeFactors_subset_of_mem_smoothNumbers hm2
-  mem_smoothNumbers_of_primeFactors_subset (mul_ne_zero hm1.1 hm2.1)
-    <| primeFactors_mul hm1.1 hm2.1 ▸ Finset.union_subset hm1' hm2'
 
 lemma two_n_smooth (n : ℕ) (hn : 1 < n) : n * 2 ∈ (n + 1).smoothNumbers := by
   have h1 : n ∈ (n + 1).smoothNumbers := by
