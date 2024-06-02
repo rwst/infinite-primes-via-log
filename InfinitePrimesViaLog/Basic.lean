@@ -28,6 +28,11 @@ lemma primeCountingReal_pos (hxg3 : 3 ≤ x) : primeCountingReal x > 0 := by
     (count_monotone Nat.Prime (Nat.add_le_add_right (le_floor hxg3) 1))
     count_primes_upto_four
 
+lemma range_eq_Icc_zero_minus (n : ℕ) (hn : n > 0): range n = Icc 0 (n - 1) := by
+  ext b
+  simp_all only [mem_Icc, _root_.zero_le, true_and, mem_range]
+  exact lt_iff_le_pred hn
+
 lemma log_le_harmonic (n : ℕ) (hn : 0 < n) (hnx : n ≤ x) (hxn : x < n + 1) :
     Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ :=
   have hxpos : 0 < x := LT.lt.trans_le (cast_pos.mpr hn) hnx
@@ -99,7 +104,7 @@ lemma primeCountingReal_ge_two (hx : x ≥ 3) : primeCountingReal x ≥ 2 := by
  sorry
 
 lemma H_P4_4 : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
-    (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / nth (PrimeBelow ⌊x⌋₊) k - 1)
+    (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1))
     ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
   sorry
 
@@ -161,9 +166,39 @@ lemma H_P4_1 (n : ℕ) (hn : 1 < n) (hnx : n = ⌊x⌋₊) :
   rw [h <| subset_of_ssubset <| hnx.symm ▸ (Icc_ssubset_smoothNumbers n hn)]
   exact (le_add_iff_nonneg_right (∑ k ∈ Icc 1 n, 1 / (k : ℝ))).mpr h'
 
-lemma H_P4_3a : (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) =
+@[simp]
+lemma getbang_natCast_eq_get {α : Type*} [Inhabited α] (l : List α) (i : Fin l.length) :
+    l[(i : ℕ)]! = l[i] := by
+  exact getElem!_pos l (↑i) (Fin.val_lt_of_le i (le_refl l.length))
+
+lemma H_P4_3a2 : ⌊x⌋₊.primesBelow.toList.length = (primeCountingReal x) := by sorry
+
+lemma H_P4_3a1' {α G : Type*} [CommMonoid G] [Inhabited α] (L : List α) (f : α → G) :
+    (L.map f).prod = ∏ (i : Fin L.length), f (L.get i) := by
+  simp only [Fin.getElem_fin, List.getElem_eq_get, Fin.eta, Fin.prod_univ_get']
+
+lemma H_P4_3a' (f : ℕ → ℝ) (hxg3 : 3 ≤ x) : (∏ p ∈ primesBelow ⌊x⌋₊, f p) =
+    (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), f ((primesBelow ⌊x⌋₊).toList)[k]!) :=
+  calc
+    ∏ p ∈ primesBelow ⌊x⌋₊, f p = ∏ (k : Fin ((primesBelow ⌊x⌋₊).toList.length)), f (List.get ((primesBelow ⌊x⌋₊).toList) k) := by
+      rw [← prod_to_list, H_P4_3a1']
+    _ = ∏ k : Fin ((primesBelow ⌊x⌋₊).toList.length), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
+      simp only [Fin.getElem!_fin, getbang_natCast_eq_get, Fin.getElem_fin, List.getElem_eq_get, Fin.eta]
+    _ = ∏ k ∈ range (primeCountingReal x), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
+      rw [← H_P4_3a2]
+      sorry
+    _ = ∏ k ∈ Icc 0 ((primeCountingReal x) - 1), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
+      rw [range_eq_Icc_zero_minus]
+      exact primeCountingReal_pos x hxg3
+
+lemma H_P4_3a'' (hxg3 : 3 ≤ x) (k : ℕ): ((primesBelow ⌊x⌋₊).toList)[k]! = nth (PrimeBelow ⌊x⌋₊) k := by
+  sorry
+
+lemma H_P4_3a (hxg3 : 3 ≤ x) : (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) =
     (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
-    (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := by sorry
+    (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := by
+  rw [H_P4_3a' x (f := fun (k : ℕ) => ((k : ℝ) / (k - 1))) hxg3]
+  simp_rw [H_P4_3a'' x hxg3]
 
 theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ)
     (hn : 1 < n) (hnx : n = ⌊x⌋₊) (hxg3 : 3 ≤ x) (hxgn : x ≥ n) (hxlt : x < n + 1) :
