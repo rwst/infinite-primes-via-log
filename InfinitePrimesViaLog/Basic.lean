@@ -18,6 +18,9 @@ lemma mem_smoothNumbers_of_lt' {m n : ℕ} (hm : 0 < m) (hmn : m < n) : m ∈ n.
 theorem mul_mem_smoothNumbers' {m₁ m₂ n : ℕ}
     (hm1 : m₁ ∈ n.smoothNumbers) (hm2 : m₂ ∈ n.smoothNumbers) : m₁ * m₂ ∈ n.smoothNumbers := by sorry
 
+/- This is already in Mathlib -/
+theorem Fin.prod_univ_get' [CommMonoid β] (l : List α) (f : α → β) : ∏ i, f (l.get i) = (l.map f).prod := by sorry
+
 lemma primeCountingReal_pos (hxg3 : 3 ≤ x) : primeCountingReal x > 0 := by
   have count_primes_upto_four : 0 < count Nat.Prime (⌊3⌋₊ + 1) := by rw [floor_nat]; norm_num; decide
   unfold primeCountingReal
