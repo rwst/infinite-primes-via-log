@@ -208,7 +208,7 @@ theorem log_le_primeCountingReal_add_one (n : ℕ) (x : ℝ)
     _ ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := H_P4_1 x n hn hnx
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := H_P4_2 x
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) := H_P4_3 x
-    _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := H_P4_3a x
+    _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := H_P4_3a x hxg3
     _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := H_P4_4 x
     _ = primeCountingReal x + 1 := H_P4_5 x hxg3
 
