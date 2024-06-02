@@ -19,7 +19,7 @@ theorem mul_mem_smoothNumbers' {m₁ m₂ n : ℕ}
     (hm1 : m₁ ∈ n.smoothNumbers) (hm2 : m₂ ∈ n.smoothNumbers) : m₁ * m₂ ∈ n.smoothNumbers := by sorry
 
 /- This is already in Mathlib -/
-theorem Fin.prod_univ_get' [CommMonoid β] (l : List α) (f : α → β) : ∏ i, f (l.get i) = (l.map f).prod := by sorry
+theorem Fin.prod_univ_get' (α β : Type) [CommMonoid β] (l : List α) (f : α → β) : ∏ i, f (l.get i) = (l.map f).prod := by sorry
 
 lemma primeCountingReal_pos (hxg3 : 3 ≤ x) : primeCountingReal x > 0 := by
   have count_primes_upto_four : 0 < count Nat.Prime (⌊3⌋₊ + 1) := by rw [floor_nat]; norm_num; decide
@@ -178,7 +178,8 @@ lemma H_P4_3a2 : ⌊x⌋₊.primesBelow.toList.length = (primeCountingReal x) :=
 
 lemma H_P4_3a1' {α G : Type*} [CommMonoid G] [Inhabited α] (L : List α) (f : α → G) :
     (L.map f).prod = ∏ (i : Fin L.length), f (L.get i) := by
-  simp only [Fin.getElem_fin, List.getElem_eq_get, Fin.eta, Fin.prod_univ_get']
+-- works with newest Mathlib
+--  simp only [Fin.getElem_fin, List.getElem_eq_get, Fin.eta, Fin.prod_univ_get']
   sorry
 
 lemma H_P4_3a' (f : ℕ → ℝ) (hxg3 : 3 ≤ x) : (∏ p ∈ primesBelow ⌊x⌋₊, f p) =
