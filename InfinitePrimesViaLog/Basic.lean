@@ -7,7 +7,7 @@ noncomputable def primeCountingReal (x : ℝ) : ℕ :=
   if (x < 2) then 1 else Nat.primeCounting' ⌊x⌋₊
 
 open Finset Nat BigOperators Filter
-variable (x : ℝ) (h_x : x ≥ 2)
+variable (x : ℝ) (h_x : ⌊x⌋₊ ≥ 2)
 
 def S₁ (x : ℝ) : Set ℕ := smoothNumbers (⌊x⌋₊ + 1)
 
@@ -177,7 +177,7 @@ lemma getbang_natCast_eq_get {α : Type*} [Inhabited α] (l : List α) (i : Fin 
 lemma H_P4_3a2 : ⌊x⌋₊.primesBelow.toList.length = (primeCountingReal x) := by
   unfold primeCountingReal
   split
-  have : ¬x < 2 := by linarith
+  have : ¬x < 2 := by sorry
   contradiction
   rw [length_toList, primesBelow_card_eq_primeCounting']
 
@@ -195,7 +195,7 @@ lemma H_P4_3a' (f : ℕ → ℝ) (hxg3 : 3 ≤ x) : (∏ p ∈ primesBelow ⌊x�
     _ = ∏ k : Fin ((primesBelow ⌊x⌋₊).toList.length), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
       simp only [Fin.getElem!_fin, getbang_natCast_eq_get, Fin.getElem_fin, List.getElem_eq_get, Fin.eta]
     _ = ∏ k ∈ range (primeCountingReal x), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
-      rw [← H_P4_3a2, prod_range]; rfl; exact h_x
+      rw [← H_P4_3a2, prod_range]; rfl
     _ = ∏ k ∈ Icc 0 ((primeCountingReal x) - 1), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
       rw [range_eq_Icc_zero_sub_one]
       exact zero_lt_iff.mp (primeCountingReal_pos x hxg3)
@@ -206,23 +206,23 @@ lemma H_P4_3a'' (hxg3 : 3 ≤ x) (k : ℕ): ((primesBelow ⌊x⌋₊).toList)[k]
 lemma H_P4_3a (hxg3 : 3 ≤ x) : (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) =
     (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
     (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := by
-  rw [H_P4_3a' x (f := fun (k : ℕ) => ((k : ℝ) / (k - 1))) h_x]
+  rw [H_P4_3a' x (f := fun (k : ℕ) => ((k : ℝ) / (k - 1))) hxg3]
   simp_rw [H_P4_3a'' x hxg3]
-  exact hxg3
 
 theorem log_le_primeCountingReal_add_one (n : ℕ)
     (hn : 1 < n) (hnx : n = ⌊x⌋₊) (hxg3 : 3 ≤ x) (hxgn : x ≥ n) (hxlt : x < n + 1) :
     Real.log x ≤ primeCountingReal x + 1 :=
   calc
-    Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := log_le_harmonic x h_x n (zero_lt_of_lt hn) hxgn hxlt
+    Real.log x ≤ ∑ k ∈ Icc 1 n, (k : ℝ)⁻¹ := log_le_harmonic x n (zero_lt_of_lt hn) hxgn hxlt
     _ ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := H_P4_1 x n hn hnx
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := H_P4_2 x
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) := H_P4_3 x
-    _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := H_P4_3a x h_x hxg3
+    _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := H_P4_3a x hxg3
     _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := H_P4_4 x
     _ = primeCountingReal x + 1 := H_P4_5 x hxg3
 
 theorem primeCountingReal_unbounded : Tendsto primeCountingReal atTop atTop := by sorry
+--  rw [not_bddAbove_iff]
 
 theorem infinite_setOf_prime : { p | Nat.Prime p }.Infinite :=
   sorry
