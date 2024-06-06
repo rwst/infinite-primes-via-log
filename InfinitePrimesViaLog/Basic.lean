@@ -22,14 +22,11 @@ theorem mul_mem_smoothNumbers' {m₁ m₂ n : ℕ}
 theorem Fin.prod_univ_get' (α β : Type) [CommMonoid β] (l : List α) (f : α → β) : ∏ i, f (l.get i) = (l.map f).prod := by sorry
 
 lemma primeCountingReal_pos (hxg3 : 3 ≤ x) : primeCountingReal x > 0 := by
-  have count_primes_upto_four : 0 < count Nat.Prime (⌊3⌋₊ + 1) := by rw [floor_nat]; norm_num; decide
+  have count_primes_upto_three : 0 < count Nat.Prime ⌊3⌋₊ := by rw [floor_nat]; norm_num; decide
   unfold primeCountingReal
   apply ite_pos Nat.one_pos
   unfold primeCounting'
-  sorry
---  exact gt_of_ge_of_gt
---    (count_monotone Nat.Prime (Nat.add_le_add_right (le_floor hxg3) 1))
---    count_primes_upto_four
+  exact gt_of_ge_of_gt (count_monotone Nat.Prime (le_floor hxg3)) count_primes_upto_three
 
 lemma range_eq_Icc_zero_sub_one (n : ℕ) (hn : n ≠ 0): range n = Icc 0 (n - 1) := by
   ext b
@@ -217,7 +214,8 @@ theorem log_le_primeCountingReal_add_one (n : ℕ)
     _ ≤ (∑' m : (S₁ x), (m : ℝ)⁻¹) := H_P4_1 x n hn hnx
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := H_P4_2 x
     _ = (∏ p ∈ primesBelow ⌊x⌋₊, ((p : ℝ) / (p - 1))) := H_P4_3 x
-    _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := H_P4_3a x hxg3
+    _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
+          (nth (PrimeBelow ⌊x⌋₊) k : ℝ) / (nth (PrimeBelow ⌊x⌋₊) k - 1)) := H_P4_3a x hxg3
     _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := H_P4_4 x
     _ = primeCountingReal x + 1 := H_P4_5 x hxg3
 
