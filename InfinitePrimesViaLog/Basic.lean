@@ -171,10 +171,11 @@ lemma getbang_natCast_eq_get {α : Type*} [Inhabited α] (l : List α) (i : Fin 
     l[(i : ℕ)]! = l[i] := by
   exact getElem!_pos l (↑i) (Fin.val_lt_of_le i (le_refl l.length))
 
-lemma H_P4_3a2 : ⌊x⌋₊.primesBelow.toList.length = (primeCountingReal x) := by
+lemma H_P4_3a2 (hxg3 : 3 ≤ x) : ⌊x⌋₊.primesBelow.toList.length = (primeCountingReal x) := by
   unfold primeCountingReal
-  split
-  have : ¬x < 2 := by sorry
+  split <;> rename_i h
+  have H (_ : x < 2) : ¬3 ≤ x := by apply not_le.mpr; linarith
+  apply H at h
   contradiction
   rw [length_toList, primesBelow_card_eq_primeCounting']
 
@@ -192,7 +193,7 @@ lemma H_P4_3a' (f : ℕ → ℝ) (hxg3 : 3 ≤ x) : (∏ p ∈ primesBelow ⌊x�
     _ = ∏ k : Fin ((primesBelow ⌊x⌋₊).toList.length), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
       simp only [Fin.getElem!_fin, getbang_natCast_eq_get, Fin.getElem_fin, List.getElem_eq_get, Fin.eta]
     _ = ∏ k ∈ range (primeCountingReal x), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
-      rw [← H_P4_3a2, prod_range]; rfl
+      rw [← H_P4_3a2, prod_range]; rfl; exact hxg3
     _ = ∏ k ∈ Icc 0 ((primeCountingReal x) - 1), f ((primesBelow ⌊x⌋₊).toList)[k]! := by
       rw [range_eq_Icc_zero_sub_one]
       exact zero_lt_iff.mp (primeCountingReal_pos x hxg3)
