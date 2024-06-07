@@ -11,16 +11,6 @@ variable (x : ℝ) (h_x : ⌊x⌋₊ ≥ 2)
 
 def S₁ (x : ℝ) : Set ℕ := smoothNumbers (⌊x⌋₊ + 1)
 
-/- This is already in Mathlib -/
-lemma mem_smoothNumbers_of_lt' {m n : ℕ} (hm : 0 < m) (hmn : m < n) : m ∈ n.smoothNumbers := by sorry
-
-/- This is already in Mathlib -/
-theorem mul_mem_smoothNumbers' {m₁ m₂ n : ℕ}
-    (hm1 : m₁ ∈ n.smoothNumbers) (hm2 : m₂ ∈ n.smoothNumbers) : m₁ * m₂ ∈ n.smoothNumbers := by sorry
-
-/- This is already in Mathlib -/
---theorem Fin.prod_univ_get' (α β : Type) [CommMonoid β] (l : List α) (f : α → β) : ∏ i, f (l.get i) = (l.map f).prod := by sorry
-
 lemma primeCountingReal_pos (hxg3 : 3 ≤ x) : primeCountingReal x > 0 := by
   have count_primes_upto_three : 0 < count Nat.Prime ⌊3⌋₊ := by rw [floor_nat]; norm_num; decide
   unfold primeCountingReal
@@ -77,7 +67,7 @@ lemma H_P4_4a {k p: ℝ} (hk: k > 0) (hp: p ≥ k + 1): p / (p - 1) ≤ (k + 1) 
   exact hp
 
 def PrimeBelow (p n : ℕ) :=
-  Irreducible p ∧ p < n
+  p ∈ (primesBelow n)
 
 theorem H_P4_4b (k : ℕ) (hk₁ : k ≥ 3) (hk₂ : k < primeCountingReal x)
     : nth (PrimeBelow ⌊x⌋.natAbs) k ≥ k + 2 := by sorry
@@ -133,10 +123,10 @@ lemma H_P4_5 (hx : x ≥ 3) : (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : �
 
 lemma two_n_smooth (n : ℕ) (hn : 1 < n) : n * 2 ∈ (n + 1).smoothNumbers := by
   have h1 : n ∈ (n + 1).smoothNumbers := by
-    apply mem_smoothNumbers_of_lt' (zero_lt_of_lt hn); linarith
+    apply mem_smoothNumbers_of_lt (zero_lt_of_lt hn); linarith
   have h2 : 2 ∈ (n + 1).smoothNumbers := by
-    apply mem_smoothNumbers_of_lt' ofNat_pos; linarith
-  apply mul_mem_smoothNumbers'
+    apply mem_smoothNumbers_of_lt ofNat_pos; linarith
+  apply mul_mem_smoothNumbers
   assumption'
 
 /- The natural numbers `[1 ... n]` are a strict subset of the `(n+1)`-smooth numbers -/
@@ -144,7 +134,7 @@ theorem Icc_ssubset_smoothNumbers (n : ℕ) (hn : 1 < n): Set.Icc 1 n ⊂ smooth
   refine (Set.ssubset_iff_of_subset ?h).mpr ?_
   . intro x; intro h
     rw [Set.mem_Icc] at h
-    exact (mem_smoothNumbers_of_lt' (lt_of_succ_le h.1) (lt_succ_of_le h.2))
+    exact (mem_smoothNumbers_of_lt (lt_of_succ_le h.1) (lt_succ_of_le h.2))
   . exact ⟨n * 2, And.intro (two_n_smooth n hn) (Set.not_mem_Icc_of_gt (by linarith))⟩
 
 /--lemma Nonempty_S1_diff (n : ℕ) (hn : 1 < n) (hnx : n = ⌊x⌋₊)
@@ -181,9 +171,7 @@ lemma H_P4_3a2 (hxg3 : 3 ≤ x) : ⌊x⌋₊.primesBelow.toList.length = (primeC
 
 lemma H_P4_3a1' {α G : Type*} [CommMonoid G] [Inhabited α] (L : List α) (f : α → G) :
     (L.map f).prod = ∏ (i : Fin L.length), f (L.get i) := by
--- works with newest Mathlib
---  simp only [Fin.getElem_fin, List.getElem_eq_get, Fin.eta, Fin.prod_univ_get']
-  sorry
+  simp only [Fin.getElem_fin, List.getElem_eq_get, Fin.eta, Fin.prod_univ_get']
 
 lemma H_P4_3a' (f : ℕ → ℝ) (hxg3 : 3 ≤ x) : (∏ p ∈ primesBelow ⌊x⌋₊, f p) =
     (∏ k ∈ Icc 0 ((primeCountingReal x) - 1), f ((primesBelow ⌊x⌋₊).toList)[k]!) :=
