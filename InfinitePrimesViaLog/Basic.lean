@@ -77,14 +77,15 @@ theorem monotone_primeCountingReal : Monotone primeCountingReal := by
       exact le_of_ble_eq_true rfl
     · simp [ha, hb]
       unfold primeCounting'
-      exact le_trans count_primes_upto_three (count_monotone Nat.Prime (le_floor (le_of_not_lt hb)))
+      exact le_trans count_primes_upto_three <| count_monotone Nat.Prime
+        <| le_floor <| le_of_not_lt hb
   · by_cases hb : b < 3
     · linarith
     · simp only [ha, hb, not_lt, ite_false]
       simp_all only [not_lt]
       exact monotone_primeCounting' <| Nat.floor_le_floor a b hab
 
-lemma primeCountingReal_three : primeCountingReal 3 = 2 := by
+lemma primeCountingReal_three : primeCountingReal 3 = 1 := by
   unfold primeCountingReal
   norm_num
   have : π 3 = 2 := by decide
@@ -98,7 +99,7 @@ lemma H_P4_4 : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
     ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
   sorry
 
-lemma prod_Icc_succ_div (n : ℕ) (hn : 2 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) : ℝ) / x) = n + 1 := by
+lemma prod_Icc_succ_div (n : ℕ) (hn : 1 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) : ℝ) / x) = n + 1 := by
   rw [← Nat.Ico_succ_right]
   induction' n with n h
   · simp
@@ -106,16 +107,17 @@ lemma prod_Icc_succ_div (n : ℕ) (hn : 2 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) 
     norm_num
     cases' lt_or_ge n 2 with _ h2
     · interval_cases n
-      · tauto
       · norm_num
+      · norm_num
+    apply one_le_of_lt at h2
     specialize h h2
     field_simp [Finset.prod_eq_zero_iff] at h ⊢
     rw [h]
     ring
 
 lemma H_P4_5 (hx : x ≥ 3) : (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) = primeCountingReal x + 1 := by
-  rw [prod_Icc_succ_div (primeCountingReal x)
-    (primeCountingReal_three ▸ Monotone.imp monotone_primeCountingReal hx)]
+  exact prod_Icc_succ_div (primeCountingReal x)
+    (primeCountingReal_three ▸ Monotone.imp monotone_primeCountingReal hx)
 
 --lemma H_P4_5' : (∏ k in Icc 1 (primeCountingReal x), (nth primesBelow k : ℝ) / ((nth primesBelow k) - 1))
 --    ≤ (∏ k in Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
