@@ -87,9 +87,8 @@ theorem monotone_primeCountingReal : Monotone primeCountingReal := by
 
 lemma primeCountingReal_three : primeCountingReal 3 = 1 := by
   unfold primeCountingReal
-  norm_num
-  have : π 3 = 2 := by decide
-  sorry
+  simp only [lt_self_iff_false, ↓reduceIte, floor_ofNat]
+  decide
 
 lemma primeCountingReal_ge_two (hx : x ≥ 3) : primeCountingReal x ≥ 2 := by
  sorry
