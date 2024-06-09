@@ -51,7 +51,7 @@ lemma H_P4_3 : (∏ p ∈ primesBelow ⌊x⌋₊, (∑' k : ℕ, ((p : ℝ) ^ k)
   rw [mem_primesBelow] at hx
   exact inv_lt_one <| one_lt_cast.mpr <| Prime.one_lt hx.2
 
-lemma H_P4_4a {k p: ℝ} (hk: k > 0) (hp: p ≥ k + 1): p / (p - 1) ≤ (k + 1) / k := by
+lemma H_P4_4c {k p: ℝ} (hk: k > 0) (hp: p ≥ k + 1): p / (p - 1) ≤ (k + 1) / k := by
   have h_k_nonzero: k ≠ 0 := ne_iff_lt_or_gt.mpr (Or.inr hk)
   have h_p_pred_pos: p - 1 > 0 := by linarith
   have h_p_pred_nonzero: p - 1 ≠ 0 := ne_iff_lt_or_gt.mpr (Or.inr h_p_pred_pos)
@@ -89,9 +89,6 @@ lemma primeCountingReal_three : primeCountingReal 3 = 1 := by
   unfold primeCountingReal
   simp only [lt_self_iff_false, ↓reduceIte, floor_ofNat]
   decide
-
-lemma primeCountingReal_ge_two (hx : x ≥ 3) : primeCountingReal x ≥ 2 := by
- sorry
 
 lemma H_P4_4 : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
     (nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1))
