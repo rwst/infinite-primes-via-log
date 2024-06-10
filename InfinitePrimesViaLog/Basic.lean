@@ -90,15 +90,34 @@ lemma primeCountingReal_three : primeCountingReal 3 = 1 := by
   simp only [lt_self_iff_false, ↓reduceIte, floor_ofNat]
   decide
 
+lemma prod_Icc_add_one {a b : ℕ} (f : ℕ → ℝ) : (∏ k ∈ Icc a b, f k) =
+    (∏ k ∈ Icc (a + 1) (b + 1), f (k - 1)) := by
+  rw [← image_add_right_Icc a b 1]
+  have h : ∀ x ∈ Icc a b, ∀ y ∈ Icc a b, succ x = succ y → x = y := by omega
+  rw [prod_image h]
+  simp only [succ_eq_add_one, add_tsub_cancel_right]
+
 lemma H_P4_4a (hxg3 : 3 ≤ x) : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
-    (nth (PrimeBelow (Nat.floor x)) k : ℝ) / ((nth (PrimeBelow (Nat.floor x)) k) + 1))
+    (nth (PrimeBelow (Nat.floor x)) k : ℝ) / ((nth (PrimeBelow (Nat.floor x)) k) - 1))
     = (∏ k ∈ Icc 1 (primeCountingReal x),
-    (nth (PrimeBelow (Nat.floor x)) (k - 1) : ℝ) / (nth (PrimeBelow (Nat.floor x)) (k - 1) + 1)) := by
-  sorry
+    (nth (PrimeBelow (Nat.floor x)) (k - 1) : ℝ) / (nth (PrimeBelow (Nat.floor x)) (k - 1) - 1)) := by
+  rw [prod_Icc_add_one, zero_add]
+  rw [←Nat.sub_add_comm (n := (primeCountingReal x)) (k := 1) (m := 1)]
+  rw [Nat.add_sub_cancel]
+  apply primeCountingReal_pos x hxg3
+  exact x
 
 lemma H_P4_4 (hxg3 : 3 ≤ x) : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
     ((nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1)))
     ≤ (∏ k ∈ Icc 1 (primeCountingReal x), ((k + 1 : ℝ) / k)) := by
+  rw [H_P4_4a x hxg3]
+/-  calc
+    (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
+    (nth (PrimeBelow (Nat.floor x)) k : ℝ) / ((nth (PrimeBelow (Nat.floor x)) k) + 1))
+    = (∏ k ∈ Icc 1 (primeCountingReal x),
+    (nth (PrimeBelow (Nat.floor x)) (k - 1) : ℝ) / (nth (PrimeBelow (Nat.floor x)) (k - 1) + 1)) := by sorry --H_P4_4a
+    ≤ (∏ k ∈ Icc 1 (primeCountingReal x), ((k + 1 : ℝ) / k)) := by sorry
+-/
   sorry
 
 lemma prod_Icc_succ_div (n : ℕ) (hn : 1 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) : ℝ) / x) = n + 1 := by
