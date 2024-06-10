@@ -127,14 +127,6 @@ By cases and the monotonicity of $\pi(n)$ and that of the floor function.
 \end{proof}
 
 \begin{lemma}
-\label{lem:lemma5-2}
-\lean{primeCountingReal_ge_two}
-\uses{lem:lemma5-2-1}
-\leanok
-For $x\ge3$, $\pi(x)\ge2$.
-\end{lemma}
-
-\begin{lemma}
 \label{lem:lemma5-1}
 \lean{prod_Icc_succ_div}
 \leanok
@@ -149,7 +141,7 @@ We transform into a product over the open interval and use the existing Mathlib4
 \begin{lemma}
 \label{lem:lemma5}
 \lean{H_P4_5}
-\uses{lem:lemma5-1, lem:lemma5-2}
+\uses{lem:lemma5-1}
 \leanok
 For $x\ge3$,
     $$\prod_{k=1}^{\pi(x)}\frac{k+1}{k} = \pi(x)+1.$$

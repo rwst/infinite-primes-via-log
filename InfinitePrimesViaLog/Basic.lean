@@ -90,9 +90,15 @@ lemma primeCountingReal_three : primeCountingReal 3 = 1 := by
   simp only [lt_self_iff_false, ↓reduceIte, floor_ofNat]
   decide
 
-lemma H_P4_4 : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
-    (nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1))
-    ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := by
+lemma H_P4_4a (hxg3 : 3 ≤ x) : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
+    (nth (PrimeBelow (Nat.floor x)) k : ℝ) / ((nth (PrimeBelow (Nat.floor x)) k) + 1))
+    = (∏ k ∈ Icc 1 (primeCountingReal x),
+    (nth (PrimeBelow (Nat.floor x)) (k - 1) : ℝ) / (nth (PrimeBelow (Nat.floor x)) (k - 1) + 1)) := by
+  sorry
+
+lemma H_P4_4 (hxg3 : 3 ≤ x) : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
+    ((nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1)))
+    ≤ (∏ k ∈ Icc 1 (primeCountingReal x), ((k + 1 : ℝ) / k)) := by
   sorry
 
 lemma prod_Icc_succ_div (n : ℕ) (hn : 1 ≤ n) : (∏ x ∈ Icc 1 n, ((x + 1) : ℝ) / x) = n + 1 := by
@@ -190,7 +196,7 @@ lemma H_P4_3a'' (hxg3 : 3 ≤ x) (k : ℕ): ((primesBelow (Nat.floor x)).toList)
 
 lemma H_P4_3a (hxg3 : 3 ≤ x) : (∏ p ∈ primesBelow (Nat.floor x), ((p : ℝ) / (p - 1))) =
     (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
-    (nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1)) := by
+    ((nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1))) := by
   rw [H_P4_3a' x (f := fun (k : ℕ) => ((k : ℝ) / (k - 1))) hxg3]
   simp_rw [H_P4_3a'' x hxg3]
 
@@ -203,8 +209,8 @@ theorem log_le_primeCountingReal_add_one (n : ℕ)
     _ = (∏ p ∈ primesBelow (Nat.floor x), (∑' k : ℕ, (p ^ k : ℝ)⁻¹)) := H_P4_2 x
     _ = (∏ p ∈ primesBelow (Nat.floor x), ((p : ℝ) / (p - 1))) := H_P4_3 x
     _ = (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
-          (nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1)) := H_P4_3a x hxg3
-    _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := H_P4_4 x
+        ((nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1))) := H_P4_3a x hxg3
+    _ ≤ (∏ k ∈ Icc 1 (primeCountingReal x), (k + 1 : ℝ) / k) := H_P4_4 x hxg3
     _ = primeCountingReal x + 1 := H_P4_5 x hxg3
 
 theorem primeCountingReal_unbounded : Tendsto primeCountingReal atTop atTop := by sorry
