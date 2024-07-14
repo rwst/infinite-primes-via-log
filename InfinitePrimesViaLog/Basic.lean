@@ -7,7 +7,6 @@ noncomputable def primeCountingReal (x : ℝ) : ℕ :=
   if (x < 3) then 1 else Nat.primeCounting' (Nat.floor x)
 
 open Finset Nat BigOperators Filter
-namespace Finset
 variable (x : ℝ) (h_x : 2 < (Nat.floor x))
 
 def S₁ (x : ℝ) : Set ℕ := smoothNumbers ((Nat.floor x) + 1)
@@ -106,9 +105,24 @@ lemma H_P4_4a (hxg4 : 4 ≤ x) : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
   linarith
   exact x
 
-lemma count_PrimeBelow (n : ℕ) (hn : 2 < n) : count (PrimeBelow n) 2 = 0 := by
---  apply count_eq_card_filter_range
-  sorry
+lemma count_PrimeBelow (n : ℕ) : count (PrimeBelow n) 2 = 0 := by
+  have : (filter (PrimeBelow n) (range 2)).card = 0 := by
+    unfold PrimeBelow
+    unfold primesBelow
+    simp_rw [mem_filter, mem_range, Finset.card_eq_zero]
+    rw [Finset.filter_eq_empty_iff]
+    intro m hm
+    match m, hm with
+    | 0, _ =>
+      intro h
+      simp_all only [mem_range, ofNat_pos, not_and]
+      exact not_prime_zero h.2
+    | 1, _ =>
+      intro h
+      simp_all only [mem_range, ofNat_pos, not_and]
+      exact not_prime_one h.2
+  rw [← this]
+  apply count_eq_card_filter_range
 
 lemma nth_zero_PrimeBelow  (n : ℕ) (hn : 2 < n) : nth (PrimeBelow n) 0 = 2 := by
   rw [← count_PrimeBelow]
@@ -172,7 +186,7 @@ lemma H_P4_4 (hxg4 : 4 ≤ x) : (∏ k ∈ Icc 0 ((primeCountingReal x) - 1),
     ((nth (PrimeBelow (Nat.floor x)) k : ℝ) / (nth (PrimeBelow (Nat.floor x)) k - 1)))
     ≤ (∏ k ∈ Icc 1 (primeCountingReal x), ((k + 1 : ℝ) / k)) := by
   rw [H_P4_4a x hxg4]
-  apply prod_le_prod
+  apply Finset.prod_le_prod
   · apply H_P4_4e
     · exact h_x
     · exact hxg4
@@ -296,5 +310,3 @@ theorem primeCountingReal_unbounded : Tendsto primeCountingReal atTop atTop := b
 
 theorem infinite_setOf_prime : { p | Nat.Prime p }.Infinite :=
   sorry
-
-end Finset
