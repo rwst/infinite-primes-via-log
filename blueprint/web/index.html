@@ -32,17 +32,342 @@
 <div class="titlepage">
 <h1>Infinite primes via log(x)</h1>
 <p class="authors">
-<span class="author">Ralf Stephan</span>
+<span class="author">Moritz Firsching, Ralf Stephan</span>
 </p>
 </div>
-<p>The proof of the infinitude of primes via the fact that \(\log x\le \pi (x)+1\) is the fourth proof of this theorem in Aigner  Ziegler’s "Proofs from THE BOOK", and attributed to Euler. I’m a hobby mathematician learning to formalize proofs in the Lean4 language. I chose this proof as a beginner project, not knowing exactly what I went into. However, the best way to know in many occasions is to make a map. This is the reason for this blueprint. </p>
-<p>The aim of this formalization is to stay close to the text. It turned out that the proof needs "obvious" facts about the primes, and to show these, we cannot use Mathlib4’s set of primes, which has infinite cardinality. So, we construct <span class="ttfamily">FinitePrimes</span> and prove some of their properties that we need. </p>
+<p>The proof of the infinitude of primes via the fact that \(\log x\le \pi (x)+1\) is the fourth proof of this theorem in Aigner &amp; Ziegler’s "Proofs from THE BOOK", and attributed to Euler. The aim of this formalization is to stay close to the text of the 6th edition of "Proofs from THE BOOK". </p>
+<p>The orginal argument by Euler(E72) involves divergent infinite sums and, so, does not satisfy modern standards of rigor(San2006). </p>
+<p>(E72) Euler, Leonhard, Variae observationes circa series infinitas, Commentarii academiae scientiarum Petropolitanae 9 (1737), 1744, p. 160-188. Reprinted in Opera Omnia Series I volume 14, p. 216-244. Also available on line at <code class="verbatim">www.EulerArchive.org</code>. </p>
+<p>(San2006) Sandifer, Ed, How Euler Did It, Infinitely many primes, March 2006, </p>
+<pre class="verbatim">http://eulerarchive.maa.org/hedi/HEDI-2006-03.pdf</pre>
+<div class="definition_thmwrapper theorem-style-plain" id="def:nx">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">0.1</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="index.html#def:nx">#</a>
+    
+    
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p> In the following, the variables \(n\in \mathbb {N}\), \(x\in \mathbb {R}\), always satisfy \(x\ge 1\), \(n\le x {\lt} n+1\), which is equivalent to \(n=\lfloor x\rfloor \). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma0">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.2</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="index.html#lem:lemma0">#</a>
+    
+    <a class="icon proof" href="index.html#a0000000003"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/log_le_harmonic" class="lean_decl">log_le_harmonic</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  
+<div class="displaymath" id="a0000000004">
+  \[ \log x \le \sum _{i=1}^n\frac1i. \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000003">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>We use Mathlib lemma <code class="verbatim">log_add_one_le_harmonic</code> which proves the inequality for \(x=n+1\). </p>
+
+  </div>
+</div>
+<div class="definition_thmwrapper theorem-style-plain" id="def:S">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">0.3</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="index.html#def:S">#</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/S₁" class="lean_decl">S₁</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  
+<div class="displaymath" id="a0000000005">
+  \[  S_x = \{ 1\} \  \cup \  \{ m\, \big|\,  \text{$m$ has only prime factors $p\le x$}\}   \]
+</div>
+<div class="displaymath" id="a0000000006">
+  \[  = \text{the $(\lfloor x\rfloor +1)$- or $(n+1)$-smooth numbers}  \]
+</div>
+<p> In Lean Mathlib, \(n\)-smooth numbers are defined as numbers all of whose prime factors are less than \(n\). So, in the Lean proofs, a shift to \((n+1)\)-smooth numbers is necessary. </p>
+
+  </div>
+</div>
+<p>To show that the sum of inverses of up to \(n\) is less than the sum of inverses of all \((n+1)\)-smooth numbers, it is formally necessary to first show that the second sum converges. Since the proof computes a bound for that sum anyway, we just change the order of dependent steps by determining the value of the bound, thus proving convergence, and finally comparing both sums. </p>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma2">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.4</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="index.html#lem:lemma2">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#def:S">Definition 0.21</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_2" class="lean_decl">H_P4_2</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  
+<div class="displaymath" id="a0000000007">
+  \[ \sum _{m\in S_x}\frac{1}{m} = \underset {p\le x}{\prod _{p\in \mathbb {P}}}\Big(\sum _{k\in \mathbb {N}}\frac{1}{p^k}\Big). \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma3">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.5</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="index.html#lem:lemma3">#</a>
+    
+    <a class="icon proof" href="index.html#a0000000008"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_3" class="lean_decl">H_P4_3</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  
+<div class="displaymath" id="a0000000009">
+  \[ \underset {p\le x}{\prod _{p\in \mathbb {P}}}\Big(\sum _{k\in \mathbb {N}}\frac{1}{p^k}\Big) = \underset {p\le x}{\prod _{p\in \mathbb {P}}}\frac{p}{p-1} \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000008">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>By algebraic manipulation around the geometric series formula (<code class="verbatim">tsum_geometric_of_lt_one</code> in Mathlib4). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma4-1">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.6</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="index.html#lem:lemma4-1">#</a>
+    
+    <a class="icon proof" href="index.html#a0000000010"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_4a" class="lean_decl">H_P4_4a</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  For \(k,p \in \mathbb {R}\), \(k\ge 0\), \(p \ge k+1\), </p>
+<div class="displaymath" id="a0000000011">
+  \[ \frac{p}{p-1} \le \frac{k+1}{k}. \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000010">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>The current proof is by algebraic manipulation of fractions. </p>
+
+  </div>
+</div>
 <div class="definition-pre_thmwrapper theorem-style-plain" id="def:piReal">
   <div class="definition-pre_thmheading">
     <span class="definition-pre_thmcaption">
     Definition
     </span>
-    <span class="definition-pre_thmlabel">0.1</span>
+    <span class="definition-pre_thmlabel">0.7</span>
     <div class="thm_header_extras">
 
         </div>
@@ -72,23 +397,184 @@
         </div>
   </div>
   <div class="definition-pre_thmcontent">
-  <p>  Given the prime counting function \(\pi (n)\), \(n\in \mathbb {N}\), we define \(\pi _R(x)\), \(x\in \mathbb {R}\) as \(\pi _R(x) = \pi (|\lfloor x\rfloor |)\). </p>
-<p>In the text we use \(\pi \) in both cases, since it is clear from the domain which function is meant. </p>
+  <p>  Given the prime counting function \(\pi (n)\), \(n\in \mathbb {N}\), we define \(\pi (x)\), \(x\in \mathbb {R}\) as \(\pi (x) = \pi (|\lfloor x\rfloor |)\) for \(x\ge 2\), and \(0\) otherwise. </p>
 
   </div>
 </div>
-<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma5-2-1">
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma4-2">
   <div class="lemma_thmheading">
     <span class="lemma_thmcaption">
     Lemma
     </span>
-    <span class="lemma_thmlabel">0.2</span>
+    <span class="lemma_thmlabel">0.8</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="index.html#lem:lemma4-2">#</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_4b" class="lean_decl">H_P4_4b</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p>  For all \(3\le k\le \pi (x)\), the \(k\)th prime \(p_k \ge k+2\). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma3a">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.9</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="index.html#lem:lemma3a">#</a>
+    
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_3a" class="lean_decl">H_P4_3a</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  
+<div class="displaymath" id="a0000000012">
+  \[ \underset {p\le x}{\prod _{p\in \mathbb {P}}}\frac{p}{p-1} = \prod _{k=1}^{\pi (x)}\frac{p_k}{p_k-1}. \]
+</div>
+
+  </div>
+</div>
+<p> From here on, we start indices under the displayed products with \(1\), but use \(0\) as start in the Lean proofs, also because \(p_0=2\) in Lean. </p>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma4">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.10</span>
     <div class="thm_header_extras">
 
         </div>
     <div class="thm_header_hidden_extras">
 
+    <a class="icon proof" href="index.html#lem:lemma4">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="sect0001.html#lem:lemma4-1">Lemma 0.24</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma4-2">Lemma 0.26</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+    <button class="modal lean">L∃∀N</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Lean declarations</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_4" class="lean_decl">H_P4_4</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  
+<div class="displaymath" id="a0000000013">
+  \[ \prod _{k=1}^{\pi (x)}\frac{p_k}{p_k-1} \le \prod _{k=1}^{\pi (x)}\frac{k+1}{k}. \]
+</div>
+
+  </div>
+</div>
+<p> This lemma needs lemma <a href="index.html#lem:lemma4-1">0.6</a> which has the condition \(p\ge k+1\) that we provide with lemma <a href="index.html#lem:lemma4-2">0.8</a>. Since \(k\) is never greater than \(\pi (p)\), we don’t need to assume there exist primes greater those we use in the product, i.e., \(p\le x\). </p>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma5-2-1">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.11</span>
+    <div class="thm_header_extras">
+
+    
+    ✓
+        </div>
+    <div class="thm_header_hidden_extras">
+
     <a class="icon proof" href="index.html#lem:lemma5-2-1">#</a>
+    
+    <a class="icon proof" href="index.html#a0000000014"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
     
     
     
@@ -114,7 +600,19 @@
         </div>
   </div>
   <div class="lemma_thmcontent">
-  <p>  \(\pi \) is monotone. </p>
+  <p>  \(\pi (x)\) is monotone. </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000014">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>By cases and the monotonicity of \(\pi (n)\) and that of the floor function. </p>
 
   </div>
 </div>
@@ -123,9 +621,11 @@
     <span class="lemma_thmcaption">
     Lemma
     </span>
-    <span class="lemma_thmlabel">0.3</span>
+    <span class="lemma_thmlabel">0.12</span>
     <div class="thm_header_extras">
 
+    
+    ✓
         </div>
     <div class="thm_header_hidden_extras">
 
@@ -144,7 +644,7 @@
         
         <ul class="uses">
           
-          <li><a href="sect0001.html#lem:lemma5-2-1">Lemma 0.16</a></li>
+          <li><a href="sect0001.html#lem:lemma5-2-1">Lemma 0.29</a></li>
           
         </ul>
     
@@ -184,7 +684,7 @@
     <span class="lemma_thmcaption">
     Lemma
     </span>
-    <span class="lemma_thmlabel">0.4</span>
+    <span class="lemma_thmlabel">0.13</span>
     <div class="thm_header_extras">
 
     
@@ -193,6 +693,9 @@
     <div class="thm_header_hidden_extras">
 
     <a class="icon proof" href="index.html#lem:lemma5-1">#</a>
+    
+    <a class="icon proof" href="index.html#a0000000015"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
     
     
     
@@ -219,9 +722,21 @@
   </div>
   <div class="lemma_thmcontent">
   <p>  For \(n\ge 2\), </p>
-<div class="displaymath" id="a0000000003">
+<div class="displaymath" id="a0000000016">
   \[ \prod _{k=1}^{n}\frac{k+1}{k} = n+1. \]
 </div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000015">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>We transform into a product over the open interval and use the existing Mathlib4’s lemmata in an induction proof. </p>
 
   </div>
 </div>
@@ -230,13 +745,18 @@
     <span class="lemma_thmcaption">
     Lemma
     </span>
-    <span class="lemma_thmlabel">0.5</span>
+    <span class="lemma_thmlabel">0.14</span>
     <div class="thm_header_extras">
 
+    
+    ✓
         </div>
     <div class="thm_header_hidden_extras">
 
     <a class="icon proof" href="index.html#lem:lemma5">#</a>
+    
+    <a class="icon proof" href="index.html#a0000000017"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
     
     
     <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
@@ -251,9 +771,9 @@
         
         <ul class="uses">
           
-          <li><a href="sect0001.html#lem:lemma5-1">Lemma 0.18</a></li>
+          <li><a href="sect0001.html#lem:lemma5-1">Lemma 0.31</a></li>
           
-          <li><a href="sect0001.html#lem:lemma5-2">Lemma 0.17</a></li>
+          <li><a href="sect0001.html#lem:lemma5-2">Lemma 0.30</a></li>
           
         </ul>
     
@@ -284,71 +804,40 @@
         </div>
   </div>
   <div class="lemma_thmcontent">
-  
-<div class="displaymath" id="a0000000004">
-  \[ \prod _{k=1}^{\pi (x)}\frac{k+1}{k} = \pi +1. \]
+  <p>   For \(x\ge 3\), </p>
+<div class="displaymath" id="a0000000018">
+  \[ \prod _{k=1}^{\pi (x)}\frac{k+1}{k} = \pi (x)+1. \]
 </div>
 
   </div>
 </div>
-<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma4-1">
+<div class="proof_wrapper" id="a0000000017">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▶</span>
+  </div>
+  <div class="proof_content">
+  <p>By substitution into lemma <a href="index.html#lem:lemma5-1">0.13</a>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma1">
   <div class="lemma_thmheading">
     <span class="lemma_thmcaption">
     Lemma
     </span>
-    <span class="lemma_thmlabel">0.6</span>
-    <div class="thm_header_extras">
-
-    
-    ✓
-        </div>
-    <div class="thm_header_hidden_extras">
-
-    <a class="icon proof" href="index.html#lem:lemma4-1">#</a>
-    
-    
-    
-    <button class="modal lean">L∃∀N</button>
-        <div class="modal-container">
-      <div class="modal-content">
-        <header>
-          <h1>Lean declarations</h1>
-          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
-</button>
-        </header>
-        
-        <ul class="uses">
-          
-          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_4a" class="lean_decl">H_P4_4a</a></li>
-          
-        </ul>
-    
-      </div>
-    </div>
-
-    
-        </div>
-  </div>
-  <div class="lemma_thmcontent">
-  <p>  For \(k,p \in \mathbb {R}\), \(k\ge 0\), \(p \ge k+1\), </p>
-<div class="displaymath" id="a0000000005">
-  \[ \frac{p}{p-1} \le \frac{k+1}{k}. \]
-</div>
-
-  </div>
-</div>
-<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma4">
-  <div class="lemma_thmheading">
-    <span class="lemma_thmcaption">
-    Lemma
-    </span>
-    <span class="lemma_thmlabel">0.7</span>
+    <span class="lemma_thmlabel">0.15</span>
     <div class="thm_header_extras">
 
         </div>
     <div class="thm_header_hidden_extras">
 
-    <a class="icon proof" href="index.html#lem:lemma4">#</a>
+    <a class="icon proof" href="index.html#lem:lemma1">#</a>
+    
+    <a class="icon proof" href="index.html#a0000000019"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
     
     
     <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
@@ -363,7 +852,19 @@
         
         <ul class="uses">
           
-          <li><a href="sect0001.html#lem:lemma4-1">Lemma 0.20</a></li>
+          <li><a href="sect0001.html#def:S">Definition 0.21</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma0">Lemma 0.20</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma2">Lemma 0.22</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma3">Lemma 0.23</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma3a">Lemma 0.27</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma4">Lemma 0.28</a></li>
+          
+          <li><a href="sect0001.html#lem:lemma5">Lemma 0.32</a></li>
           
         </ul>
     
@@ -383,7 +884,7 @@
         
         <ul class="uses">
           
-          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_4" class="lean_decl">H_P4_4</a></li>
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/H_P4_1" class="lean_decl">H_P4_1</a></li>
           
         </ul>
     
@@ -395,109 +896,21 @@
   </div>
   <div class="lemma_thmcontent">
   
-<div class="displaymath" id="a0000000006">
-  \[ \prod _{k=1}^{\pi (x)}\frac{p_k}{p_k-1} \le \prod _{k=1}^{\pi (x)}\frac{k+1}{k}. \]
+<div class="displaymath" id="a0000000020">
+  \[ \sum _{k=1}^n\frac1k \le \sum _{m\in S_x}\frac{1}{m}.  \]
 </div>
 
   </div>
 </div>
-<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma3">
-  <div class="lemma_thmheading">
-    <span class="lemma_thmcaption">
-    Lemma
+<div class="proof_wrapper" id="a0000000019">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
     </span>
-    <span class="lemma_thmlabel">0.8</span>
-    <div class="thm_header_extras">
-
-        </div>
-    <div class="thm_header_hidden_extras">
-
-    <a class="icon proof" href="index.html#lem:lemma3">#</a>
-    
-    
-    
-        </div>
+    <span class="expand-proof">▶</span>
   </div>
-  <div class="lemma_thmcontent">
-  
-<div class="displaymath" id="a0000000007">
-  \[ \underset {p\le x}{\prod _{p\in \mathbb {P}}}\Big(\sum _{k\in \mathbb {N}}\frac{1}{p^k}\Big) = \prod _{k=1}^{\pi (x)}\frac{p_k}{p_k-1} \]
-</div>
-
-  </div>
-</div>
-<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma2">
-  <div class="lemma_thmheading">
-    <span class="lemma_thmcaption">
-    Lemma
-    </span>
-    <span class="lemma_thmlabel">0.9</span>
-    <div class="thm_header_extras">
-
-        </div>
-    <div class="thm_header_hidden_extras">
-
-    <a class="icon proof" href="index.html#lem:lemma2">#</a>
-    
-    
-    
-        </div>
-  </div>
-  <div class="lemma_thmcontent">
-  <p> Given the infinite set \(S_x\) of all numbers \(m\) that have only prime factors \(p\le x\), </p>
-<div class="displaymath" id="a0000000008">
-  \[ \sum _{m\in S_x}\frac{1}{m} = \underset {p\le x}{\prod _{p\in \mathbb {P}}}\Big(\sum _{k\in \mathbb {N}}\frac{1}{p^k}\Big). \]
-</div>
-
-  </div>
-</div>
-<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma1">
-  <div class="lemma_thmheading">
-    <span class="lemma_thmcaption">
-    Lemma
-    </span>
-    <span class="lemma_thmlabel">0.10</span>
-    <div class="thm_header_extras">
-
-        </div>
-    <div class="thm_header_hidden_extras">
-
-    <a class="icon proof" href="index.html#lem:lemma1">#</a>
-    
-    
-    
-        </div>
-  </div>
-  <div class="lemma_thmcontent">
-  <p> Given the infinite set \(S_x\) of all numbers \(m\) that have only prime factors \(p\le x\), </p>
-<div class="displaymath" id="a0000000009">
-  \[ \sum _1^n\frac1n \le \sum _{m\in S_x}\frac{1}{m}.  \]
-</div>
-
-  </div>
-</div>
-<div class="lemma_thmwrapper theorem-style-plain" id="lem:lemma0">
-  <div class="lemma_thmheading">
-    <span class="lemma_thmcaption">
-    Lemma
-    </span>
-    <span class="lemma_thmlabel">0.11</span>
-    <div class="thm_header_extras">
-
-        </div>
-    <div class="thm_header_hidden_extras">
-
-    <a class="icon proof" href="index.html#lem:lemma0">#</a>
-    
-    
-    
-        </div>
-  </div>
-  <div class="lemma_thmcontent">
-  <p> For \(n\in \mathbb {N}\), \(x\in \mathbb {R}\), \(n\le x {\lt} n+1\), </p>
-<div class="displaymath" id="a0000000010">
-  \[ \log x \le \sum _{i=1}^n\frac1i. \]
-</div>
+  <div class="proof_content">
+  <p>All of the inverses in the left sum are contained in the right sum. </p>
 
   </div>
 </div>
@@ -506,9 +919,11 @@
     <span class="theorem_thmcaption">
     Theorem
     </span>
-    <span class="theorem_thmlabel">0.12</span>
+    <span class="theorem_thmlabel">0.16</span>
     <div class="thm_header_extras">
 
+    
+    ✓
         </div>
     <div class="thm_header_hidden_extras">
 
@@ -527,17 +942,17 @@
         
         <ul class="uses">
           
-          <li><a href="sect0001.html#lem:lemma0">Lemma 0.25</a></li>
+          <li><a href="sect0001.html#lem:lemma0">Lemma 0.20</a></li>
           
-          <li><a href="sect0001.html#lem:lemma1">Lemma 0.24</a></li>
+          <li><a href="sect0001.html#lem:lemma1">Lemma 0.33</a></li>
           
-          <li><a href="sect0001.html#lem:lemma2">Lemma 0.23</a></li>
+          <li><a href="sect0001.html#lem:lemma2">Lemma 0.22</a></li>
           
-          <li><a href="sect0001.html#lem:lemma3">Lemma 0.22</a></li>
+          <li><a href="sect0001.html#lem:lemma3">Lemma 0.23</a></li>
           
-          <li><a href="sect0001.html#lem:lemma4">Lemma 0.21</a></li>
+          <li><a href="sect0001.html#lem:lemma4">Lemma 0.28</a></li>
           
-          <li><a href="sect0001.html#lem:lemma5">Lemma 0.19</a></li>
+          <li><a href="sect0001.html#lem:lemma5">Lemma 0.32</a></li>
           
         </ul>
     
@@ -577,9 +992,11 @@
     <span class="theorem_thmcaption">
     Theorem
     </span>
-    <span class="theorem_thmlabel">0.13</span>
+    <span class="theorem_thmlabel">0.17</span>
     <div class="thm_header_extras">
 
+    
+    ✓
         </div>
     <div class="thm_header_hidden_extras">
 
@@ -598,7 +1015,7 @@
         
         <ul class="uses">
           
-          <li><a href="sect0001.html#thm:log_le_primeCountingReal_add_one">Theorem 0.26</a></li>
+          <li><a href="sect0001.html#thm:log_le_primeCountingReal_add_one">Theorem 0.34</a></li>
           
         </ul>
     
@@ -638,9 +1055,11 @@
     <span class="theorem_thmcaption">
     Theorem
     </span>
-    <span class="theorem_thmlabel">0.14</span>
+    <span class="theorem_thmlabel">0.18</span>
     <div class="thm_header_extras">
 
+    
+    ✓
         </div>
     <div class="thm_header_hidden_extras">
 
@@ -659,7 +1078,7 @@
         
         <ul class="uses">
           
-          <li><a href="sect0001.html#thm:primeCountingReal_unbounded">Theorem 0.27</a></li>
+          <li><a href="sect0001.html#thm:primeCountingReal_unbounded">Theorem 0.35</a></li>
           
         </ul>
     
@@ -679,7 +1098,7 @@
         
         <ul class="uses">
           
-          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/infinity_of_primes" class="lean_decl">infinity_of_primes</a></li>
+          <li><a href="https://rwst.github.io/infinite-primes-via-log/docs/find/#doc/infinite_setOf_prime" class="lean_decl">infinite_setOf_prime</a></li>
           
         </ul>
     
@@ -690,7 +1109,7 @@
         </div>
   </div>
   <div class="theorem_thmcontent">
-  <p>   The set \(\mathbb {P} = \big\{ p \in \mathbb {N} \  \mid \  p \  \mathrm{prime} \big\} \) has infinite cardinality. </p>
+  <p>   The set \(\mathbb {P} = \big\{ p \in \mathbb {N} \  \mid \  p \  \mathrm{prime} \big\} \) is infinite. </p>
 
   </div>
 </div>

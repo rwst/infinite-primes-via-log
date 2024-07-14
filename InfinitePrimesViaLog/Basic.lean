@@ -296,3 +296,5 @@ theorem primeCountingReal_unbounded : Tendsto primeCountingReal atTop atTop := b
 
 theorem infinite_setOf_prime : { p | Nat.Prime p }.Infinite :=
   sorry
+
+end Finset
